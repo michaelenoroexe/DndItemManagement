@@ -7,8 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="ItemsSpace" Margin="135,0,0,0"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="30,31,0,0" VerticalAlignment="Top" Width="92"/>
-
+        <ListBox x:Name="ItemsStorage" HorizontalAlignment="Left" Height="382" Margin="153,31,0,0" VerticalAlignment="Top" Width="628"/>
+        <Button Content="Load" Click="LoadItems" HorizontalAlignment="Left" Margin="30,31,0,0" VerticalAlignment="Top" Width="92"/>
+        <Button Content="Save" Click="SaveChanges" HorizontalAlignment="Left" Margin="30,71,0,0" VerticalAlignment="Top" Width="92"/>
+        <TextBox x:Name="TextBox_NewItem" HorizontalAlignment="Left" Margin="16,146,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TextBox_ItemOwned" HorizontalAlignment="Left" Margin="16,169,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Add" Click="AddNew" HorizontalAlignment="Left" Margin="16,222,0,0" VerticalAlignment="Top" Width="120"/>
+        
     </Grid>
 </Window>

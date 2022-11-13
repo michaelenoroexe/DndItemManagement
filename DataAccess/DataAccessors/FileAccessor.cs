@@ -15,7 +15,7 @@ namespace DataAccess.DataAccessors
 
         public IList<Item> GetItems()
         {
-            return _storage = _storageManager.GetItemsString().GetItemList() ?? new List<Item>();
+            return _storage = _storageManager.GetItemsString()?.GetItemList() ?? new List<Item>();
         }
 
         public void SaveItems()
