@@ -1,4 +1,9 @@
 ﻿namespace DataAccess.Interfaces
 {
-    internal interface IDataAccessor : IDataProvider, ISaveProvider { }
+    public interface IDataAccessor
+    {
+        public IList<Item> GetItems();
+
+        public void SaveItems();
+    }
 }

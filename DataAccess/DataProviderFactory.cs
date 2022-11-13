@@ -1,23 +1,17 @@
-﻿using DataAccess.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccess.DataAccessors;
+using DataAccess.Interfaces;
 
 namespace DataAccess
 {
     public static class DataProviderFactory
     {
-        private static IDataAccessor _dataAccesser;
+        private static IDataAccessor _dataAccessor;
 
         static DataProviderFactory()
         {
-            _dataAccesser = new ();
+            _dataAccessor = new FileAccessor();
         }
 
-        public static IDataProvider GetDataProvider() { }
-
-        public static ISaveProvider GetSaveProvider() { }
+        public static IDataAccessor GetDataAccessor() => _dataAccessor;
     }
 }
