@@ -1,6 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using DataAccess;
+using Newtonsoft.Json;
 
-namespace DataAccess.DataAccessors.FileAccessorHelpers
+namespace FileAccessor.FileAccessorHelpers
 {
     internal static class ItemsJsonExtensions
     {

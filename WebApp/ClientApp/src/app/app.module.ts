@@ -6,14 +6,14 @@ import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { AppRoutingModule } from './app-routing.module';
+import { StandartItemComponent } from './items/standart-item/standart-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    FetchDataComponent
+    StandartItemComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

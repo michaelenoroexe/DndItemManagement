@@ -1,7 +1,8 @@
-﻿using DataAccess.DataAccessors.FileAccessorHelpers;
+﻿using DataAccess;
 using DataAccess.Interfaces;
+using FileAccessor.FileAccessorHelpers;
 
-namespace DataAccess.DataAccessors
+namespace FileAccessor
 {
     internal sealed class FileAccessor : IDataAccessor
     {

@@ -1,0 +1,26 @@
+.homeContainer {
+  margin: 0px;
+  width: 100%;
+  background-color: rgba(0, 255, 255, 0.401);
+  .control {
+    float: left;
+    width: 300px;
+  }
+  button {
+    margin: 0px;
+    display: block;
+    text-align: center;
+  }
+  .display {
+    tr:hover {
+      border: solid 2px yellow;
+      background-color: aquamarine;
+    }
+    td {
+      input {
+        display: inline-block;
+        width: 100px;
+      }
+    }
+  }
+}

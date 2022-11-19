@@ -1,8 +1,13 @@
+using DataAccess.Interfaces;
+using FileAccessor;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddMvcCore();
+
+builder.Services.AddSingleton<IDataAccessor>(AccessorFactory.GetAccessor());
 
 var app = builder.Build();
 

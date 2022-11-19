@@ -1,6 +1,6 @@
-﻿namespace DataAccess.DataAccessors.FileAccessorHelpers
+﻿namespace FileAccessor.FileAccessorHelpers
 {
-    public class FileWorker
+    internal class FileWorker
     {
         private string _path;
 
@@ -12,7 +12,6 @@
         public string? GetItemsString()
         {
             if (!File.Exists(_path)) return null;
-
             using var stream = new StreamReader(new FileStream(_path, FileMode.Open, FileAccess.Read));
             return stream.ReadToEnd();
         }
