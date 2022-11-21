@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DataAccessors\" />
+    <Compile Remove="DataAccessors\**" />
+    <EmbeddedResource Remove="DataAccessors\**" />
+    <None Remove="DataAccessors\**" />
   </ItemGroup>
 
 </Project>
