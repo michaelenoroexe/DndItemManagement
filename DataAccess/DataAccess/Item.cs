@@ -12,6 +12,11 @@
             Name = name;
             Number = number;
         }
+        /// <summary>
+        /// Deserealize client request body to item without GUID to add in programm buffer.
+        /// </summary>
+        /// <param name="name">Name of item.</param>
+        /// <param name="number">Number of item user have.</param>
         private Item(string name, int number) : this(Guid.Empty, name, number) { }
 
         #region IEquatable

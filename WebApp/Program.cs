@@ -1,11 +1,12 @@
 using DataAccess.Interfaces;
 using FileAccessor;
+using WebApp.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddMvcCore();
+
+builder.Services.AddSignalR();
 
 builder.Services.AddSingleton<IDataAccessor>(AccessorFactory.GetAccessor());
 
@@ -19,6 +20,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.MapHub<ItemManagerHub>("/hub");
+
 app.UseRouting();
 
 app.MapControllers();
