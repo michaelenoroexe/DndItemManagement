@@ -11,8 +11,12 @@
     display: block;
     text-align: center;
   }
+  button:hover {
+    background-color: #646464;
+    color: aliceblue;
+  }
   .display {
-    tr:hover {
+    tr div:hover {
       border: solid 2px yellow;
       background-color: aquamarine;
     }

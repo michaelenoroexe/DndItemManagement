@@ -18,6 +18,8 @@
 
         public void SaveItems(string items)
         {
+            if (File.Exists(_path)) File.Delete(_path);
+
             using var stream = new StreamWriter(new FileStream(_path, FileMode.OpenOrCreate, FileAccess.Write));
             stream.WriteLine(items);
         }

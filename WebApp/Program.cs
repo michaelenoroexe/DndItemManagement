@@ -21,7 +21,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-//app.UseMvc();
 app.MapControllers();
 
 app.Run();

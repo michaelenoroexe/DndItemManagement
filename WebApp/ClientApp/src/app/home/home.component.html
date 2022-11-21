@@ -1,10 +1,13 @@
 <div class="homeContainer">
   <div class="control">
     <h4>Item name</h4>
-    <input [(ngModel)]="newItemName" class="itemName" type="text">
+    <input [(ngModel)]="selectedItem.name" class="itemName" type="text">
     <h4>Item number</h4>
-    <input [(ngModel)]="newItemNumber" class="itemNumber" type="number">
+    <input [(ngModel)]="selectedItem.number" class="itemNumber" type="number">
     <button (click)="AddItem()">Add</button>
+    <button (click)="EditItem()">Edit</button>
+    <button (click)="DeleteItem()">Delete</button>
+    <button (click)="SelectBlank()">Clear</button>
   </div>
   <div class="display">
     <table>
@@ -13,8 +16,10 @@
         <th>Item number</th>
       </tr>
       <tr *ngFor="let item of items">
-        <td><input type="text" [(ngModel)]="item.Name"></td>
-        <td><input type="number" [(ngModel)]="item.Number"></td>
+        <div (mouseenter)="SelectCurrent(item)">
+          <td><input type="text" [(ngModel)]="item.name"></td>
+          <td><input type="number" [(ngModel)]="item.number"></td>
+        </div>
       </tr>
     </table>
   </div>
