@@ -3,19 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbAccess", "DbAccess\DbAccess.csproj", "{91A5C70A-CE9E-421F-B698-369CB0EA3C60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DbAccess", "DataAccess\DbAccess\DbAccess.csproj", "{91A5C70A-CE9E-421F-B698-369CB0EA3C60}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{7A50984E-6635-4451-862C-DDA6A8EBB54F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{2B5D90DF-ADE6-446B-BE5F-E5B32EDA16C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess\DataAccess.csproj", "{2B5D90DF-ADE6-446B-BE5F-E5B32EDA16C1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "WebApp\WebApp.csproj", "{1F2765A0-A4CE-41E7-96CE-57F2AE0E81B4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileAccessor", "FileAccessor\FileAccessor.csproj", "{1DED0BA9-2671-4E9C-88BF-7674B3A4FBBC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{9D867C21-B5B3-42E5-85DB-955931039B98}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{52F4E99E-0B4B-4960-8744-CD955058EBF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileAccessor", "DataAccess\FileAccessor\FileAccessor.csproj", "{1DED0BA9-2671-4E9C-88BF-7674B3A4FBBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
