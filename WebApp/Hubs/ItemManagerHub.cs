@@ -5,8 +5,13 @@ namespace WebApp.Hubs
 {
     public class ItemManagerHub : Hub
     {
-        public async Task SendItemAsync() => 
-            await Clients.All.SendAsync("itemChanged", new[] { new Item(Guid.NewGuid(), "Тестовый предмет", 1337)});
+        public ItemManagerHub()
+        {
+            // TODO: Create scheme to handle requests.
+        }
+
+        public async Task ItemChanged(Item item) => 
+            await Clients.All.SendAsync("itemChanged", item);
 
         public override Task OnDisconnectedAsync(Exception? exception)
         {

@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvcCore();
 
+builder.Services.AddCors();
 builder.Services.AddSignalR();
 
 builder.Services.AddSingleton<IDataAccessor>(AccessorFactory.GetAccessor());
@@ -21,7 +22,13 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-app.MapHub<ItemManagerHub>("/hub");
+app.UseCors(conf => conf
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .SetIsOriginAllowed(_ => true)
+    .WithOrigins("https://localhost:44466"));
+app.MapHub<ItemManagerHub>("/itemHub");
 
 app.UseRouting();
 
