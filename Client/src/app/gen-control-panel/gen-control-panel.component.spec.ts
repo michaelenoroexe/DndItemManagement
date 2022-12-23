@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GenControllPanelComponent } from './gen-controll-panel.component';
+import { GenControllPanelComponent } from './gen-control-panel.component';
 
 describe('GenControllPanelComponent', () => {
   let component: GenControllPanelComponent;

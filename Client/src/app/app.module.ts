@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faAngleDown as fAD, faAngleUp as fAU } from '@fortawesome/free-solid-svg-icons';
-import { GenControllPanelComponent } from './gen-controll-panel/gen-controll-panel.component';
+import { GenControllPanelComponent } from './gen-control-panel/gen-control-panel.component';
 
 @NgModule({
   declarations: [
