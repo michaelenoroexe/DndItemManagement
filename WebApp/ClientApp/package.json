@@ -1,5 +1,5 @@
 {
-  "name": "webapp",
+  "name": "item-manager-client",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",

@@ -1,0 +1,26 @@
+version: '3.4'
+networks:
+  production:
+
+services:
+  webapp:
+    container_name: api
+    image: ${DOCKER_REGISTRY-}webapp
+    build:
+      context: WebApp
+      dockerfile: ./Dockerfile
+    networks:
+      - production
+    ports:
+      - "7200:443"
+      - "5200:80"
+
+  client:
+    container_name: client
+    build: /WebApp/ClientApp/
+    networks: 
+      - production
+    ports:
+      - "443:443"
+      - "80:80"
+      
