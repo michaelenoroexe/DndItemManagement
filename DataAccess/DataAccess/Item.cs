@@ -2,11 +2,11 @@
 {
     public class Item : IEquatable<Item>
     {
-        public Guid ItemId { get; set; }
+        public int ItemId { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
 
-        public Item(Guid itemId, string name, int number)
+        public Item(int itemId, string name, int number)
         {
             ItemId = itemId;
             Name = name;
@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="name">Name of item.</param>
         /// <param name="number">Number of item user have.</param>
-        private Item(string name, int number) : this(Guid.Empty, name, number) { }
+        private Item(string name, int number) : this(0, name, number) { }
 
         #region IEquatable
         public bool Equals(Item? other) => other is not null && other.ItemId == ItemId;

@@ -4,9 +4,10 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <ProjectGuid>e6674b07-7044-4d24-8525-fef7b387399c</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <!--<DockerLaunchAction>LaunchBrowser</DockerLaunchAction>-->
     <DockerServiceUrl>http://localhost/</DockerServiceUrl>
     <DockerServiceName>api</DockerServiceName>
+    <ContainerDevelopmentMode>Regular</ContainerDevelopmentMode>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

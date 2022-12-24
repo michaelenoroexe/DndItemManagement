@@ -8,19 +8,11 @@ import { Item } from './item';
 })
 export class ItemSaverService {
 
-  private hubConnection : signalR.HubConnection  = null!;
-
-  public UpdateItem(item:Item) {
-    this.hubConnection.send("UpdateItem", item);
-  }
-  
-  public StartConnection() {
-    this.hubConnection = new signalR.HubConnectionBuilder().withUrl('http://localhost/api/itemHub/').build();
-
-    this.hubConnection.start().then(() => this.UpdateItem(new Item("NewItem", 0, "asdff"))).catch(res => console.warn(res));
-  }
+  public hubConnection : signalR.HubConnection  = null!;
 
   constructor() { 
-    this.StartConnection();
+    this.hubConnection = new signalR.HubConnectionBuilder().withUrl('http://localhost/api/itemHub/').build();
+
+    this.hubConnection.start().catch(res => console.warn(res));
   }
 }

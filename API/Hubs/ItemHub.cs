@@ -12,9 +12,9 @@ namespace API.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task UpdateItem(Item item) 
+        public async Task UpdateItem(string message) 
         {
-            Console.WriteLine("Connect");
+            await Clients.Caller.SendAsync("handleMessage", "ServerRespond: " + message);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)

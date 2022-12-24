@@ -19,3 +19,9 @@ services:
       - "80:80"
     networks:
       - production
+    # For faster testing angular builds.
+    volumes:
+      - type: bind
+        source: Client/dist/client
+        target: /usr/share/nginx/html
+
