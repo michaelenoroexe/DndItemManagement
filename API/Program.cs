@@ -18,7 +18,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHub<ItemHub>("itemHub/");
+app.MapHub<ItemHub>("api/itemHub");
 
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Item } from '../item';
 import { ItemSaverService } from '../item-saver.service';
 
 @Component({
