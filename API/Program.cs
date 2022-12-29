@@ -1,6 +1,10 @@
 using API.Hubs;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddAuthentication().AddCookie();
+builder.Services.AddAuthentication();
 
 // Add services to the container.
 builder.Services.AddSignalR();
@@ -18,10 +22,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapHub<ItemHub>("api/itemHub");
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapHub<ItemHub>("api/itemHub");
 
 app.Run();

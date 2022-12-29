@@ -17,6 +17,6 @@ export class ItemTableComponent {
   }
 
   public send() : void {
-    this.saver.hubConnection.send("UpdateItem", this.message).then(_ => this.message = "");
+    this.saver.hubConnection.send("UpdateItem", new Item("NewName", 5)).then(_ => this.message = "");
   }
 }

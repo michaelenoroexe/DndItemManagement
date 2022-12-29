@@ -4,10 +4,10 @@ namespace FileAccessor
 {
     public static class AccessorFactory
     {
-        private static Lazy<FileAccessor> _accessor;
+        private static Lazy<FileAccessor> accessor;
 
-        static AccessorFactory() => _accessor = new Lazy<FileAccessor>();
+        static AccessorFactory() => accessor = new Lazy<FileAccessor>();
 
-        public static IDataAccessor GetAccessor() => _accessor.Value;
+        public static IDataAccessor GetAccessor() => accessor.Value;
     }
 }
