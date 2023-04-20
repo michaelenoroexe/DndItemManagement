@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication().AddCookie();
-builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
 // Add services to the container.
 builder.Services.AddSignalR();
