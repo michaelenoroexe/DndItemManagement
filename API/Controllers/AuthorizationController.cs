@@ -10,13 +10,10 @@ namespace API.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        [HttpPost]
-        [Authorize]
+        [HttpGet]
         public IActionResult SignIn()
         {
-            
-
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, )
+            return Ok("TestRequest");
         }
     }
 }

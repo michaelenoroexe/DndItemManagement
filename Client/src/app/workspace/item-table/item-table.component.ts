@@ -13,7 +13,7 @@ export class ItemTableComponent {
 
 
   constructor(private saver : ItemSaverService) {
-    saver.hubConnection.on("handleMessage", (mess:string) => this.serverRespond = this.serverRespond.concat("<br />", mess))
+    saver.hubConnection.on("handleMessage", (mess) => this.serverRespond = this.serverRespond.concat("<br />", mess))
   }
 
   public send() : void {

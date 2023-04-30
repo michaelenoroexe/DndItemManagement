@@ -12,7 +12,7 @@ namespace API.Hubs
             return base.OnConnectedAsync();
         }
 
-        public async Task UpdateItem(Item message) 
+        public async Task UpdateItem(Item item) 
         {
             await Clients.Caller.SendAsync("handleMessage", "ServerRespond: " + message);
         }

@@ -24,4 +24,5 @@ services:
       - type: bind
         source: Client/dist/client
         target: /usr/share/nginx/html
-
+    depends_on: 
+    - api
