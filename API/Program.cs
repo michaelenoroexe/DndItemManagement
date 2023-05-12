@@ -1,3 +1,4 @@
+using API.Extensions;
 using API.Hubs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
@@ -5,6 +6,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthentication().AddCookie();
 builder.Services.AddAuthorization();
+
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigureSqlContext();
 
 // Add services to the container.
 builder.Services.AddSignalR();

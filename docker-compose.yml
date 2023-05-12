@@ -26,3 +26,18 @@ services:
         target: /usr/share/nginx/html
     depends_on: 
     - api
+
+  db:
+    container_name: "DndItem"
+    env_file: db-environment.env
+    ports:
+    -  1401:1433 
+    image: mcr.microsoft.com/mssql/server
+    restart: on-failure
+    networks:
+      - production
+    volumes:
+      -  sql-item-manage:/var/opt/mssql 
+
+volumes:
+  sql-item-manage:

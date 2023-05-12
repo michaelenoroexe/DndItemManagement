@@ -6,10 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="DataAccessors\**" />
-    <EmbeddedResource Remove="DataAccessors\**" />
-    <None Remove="DataAccessors\**" />
-  </ItemGroup>
-
 </Project>

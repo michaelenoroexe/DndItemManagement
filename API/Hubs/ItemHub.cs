@@ -1,4 +1,4 @@
-﻿using DataAccess;
+﻿using Entities.Models;
 using Microsoft.AspNetCore.SignalR;
 
 namespace API.Hubs
@@ -14,7 +14,7 @@ namespace API.Hubs
 
         public async Task UpdateItem(Item item) 
         {
-            await Clients.Caller.SendAsync("handleMessage", "ServerRespond: " + message);
+            await Clients.Caller.SendAsync("handleMessage", "ServerRespond: " + item.Name);
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
