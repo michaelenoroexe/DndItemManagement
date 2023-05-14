@@ -1,10 +1,11 @@
 using API.Extensions;
 using API.Hubs;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddAuthentication().AddCookie();
+builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.ConfigureRepositoryManager();
@@ -22,8 +23,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwagger(opt =>
+    {
+        opt.RouteTemplate = "api/{documentName}/swagger.json";
+    });
+    app.UseSwaggerUI(opt =>
+    {
+        opt.SwaggerEndpoint("v1/swagger.json", "v1");
+        opt.RoutePrefix = "api";
+    });
 }
 
 app.UseAuthentication();

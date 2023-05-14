@@ -25,4 +25,8 @@ internal sealed class DMRepository : RepositoryBase<DM>, IDMRepository
         .ToListAsync();
 
     public void DeleteDM(DM dm) => Delete(dm);
+
+    public async Task<DM?> GetDmByNameAsync(string name, bool trackChanges) =>
+        await FindByCondition(x => x.Login.Equals(name), trackChanges)
+        .FirstOrDefaultAsync();
 }

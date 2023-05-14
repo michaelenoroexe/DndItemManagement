@@ -4,6 +4,7 @@ networks:
 
 services:
   api:
+    env_file: api-environment.env
     image: ${DOCKER_REGISTRY-}api
     build:
       context: .

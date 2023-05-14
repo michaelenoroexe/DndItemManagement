@@ -18,7 +18,11 @@ internal sealed class RoomRepository : RepositoryBase<Room>, IRoomRepository
         await FindByCondition(c => c.Id.Equals(roomId), trackChanges)
     .SingleOrDefaultAsync();
 
-    public void CreateRoom(Room room) => Create(room);
+    public void CreateRoom(int dmId, Room room)
+    {
+        room.DmId = dmId;
+        Create(room);
+    }
 
     public async Task<IEnumerable<Room>> GetByIdsAsync(IEnumerable<int> ids, bool trackChanges) =>
         await FindByCondition(x => ids.Contains(x.Id), trackChanges)
