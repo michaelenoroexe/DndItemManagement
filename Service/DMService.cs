@@ -84,4 +84,12 @@ internal sealed class DMService : IDMService
         mapper.Map(dmForUpdate, dmDb);
         await repository.SaveAsync();
     }
+
+    public async Task DeleteDMAsync(int dmId)
+    {
+        var dm = await GetDMAndCheckIfItExists(dmId, true);
+
+        repository.DM.DeleteDM(dm);
+        await repository.SaveAsync();
+    }
 }

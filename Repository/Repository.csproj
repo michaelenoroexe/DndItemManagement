@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Repository.Contracts\Repository.Contracts.csproj" />
+    <ProjectReference Include="..\Repository.Contracts\Repository.Contracts.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>
 

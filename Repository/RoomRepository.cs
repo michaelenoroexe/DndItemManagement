@@ -29,4 +29,8 @@ internal sealed class RoomRepository : RepositoryBase<Room>, IRoomRepository
         .ToListAsync();
 
     public void DeleteRoom(Room room) => Delete(room);
+
+    public async Task<IEnumerable<Room>> GetRoomsForDmAsync(int dmId, bool trackChanges) =>
+        await FindByCondition(x => x.DmId.Equals(dmId), trackChanges)
+        .ToListAsync();
 }
