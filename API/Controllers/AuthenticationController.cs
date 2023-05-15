@@ -9,7 +9,7 @@ namespace API.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthorizationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         [HttpGet]
         public IActionResult SignIn()
