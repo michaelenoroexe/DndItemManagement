@@ -1,0 +1,11 @@
+<div class="controlPanel">
+    <div (mouseenter)="changeProfileControl(true)"
+         (mouseleave)="changeProfileControl(false)" 
+         class="profilePanel">
+        <h4>Nickname</h4>
+        <h4 *ngIf="gmPlayer">/(GM)</h4>
+        <fa-icon [icon]="['fas', 'angle-down']" *ngIf="!extendedProfileControl"></fa-icon>
+        <fa-icon [icon]="['fas', 'angle-up']" *ngIf="extendedProfileControl"></fa-icon> 
+        <div *ngIf="extendedProfileControl" class="profileControlPanel"></div>
+    </div>
+</div>

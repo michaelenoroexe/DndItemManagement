@@ -3,24 +3,42 @@ networks:
   production:
 
 services:
-  webapp:
-    container_name: api
-    image: ${DOCKER_REGISTRY-}webapp
+  api:
+    env_file: api-environment.env
+    image: ${DOCKER_REGISTRY-}api
     build:
-      context: WebApp
-      dockerfile: ./Dockerfile
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+      - "5136:80"
     networks:
       - production
-    ports:
-      - "7200:443"
-      - "5200:80"
 
   client:
-    container_name: client
-    build: /WebApp/ClientApp/
-    networks: 
-      - production
+    build: "Client/"
     ports:
-      - "443:443"
       - "80:80"
-      
+    networks:
+      - production
+    # For faster testing angular builds.
+    volumes:
+      - type: bind
+        source: Client/dist/client
+        target: /usr/share/nginx/html
+    depends_on: 
+    - api
+
+  db:
+    container_name: "DndItem"
+    env_file: db-environment.env
+    ports:
+    -  1401:1433 
+    image: mcr.microsoft.com/mssql/server
+    restart: on-failure
+    networks:
+      - production
+    volumes:
+      -  sql-item-manage:/var/opt/mssql 
+
+volumes:
+  sql-item-manage:

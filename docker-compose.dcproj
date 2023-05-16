@@ -3,10 +3,11 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>fa7711c9-93a2-40c7-9f69-8a163ee10188</ProjectGuid>
-    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
-    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>webapp</DockerServiceName>
+    <ProjectGuid>e6674b07-7044-4d24-8525-fef7b387399c</ProjectGuid>
+    <!--<DockerLaunchAction>LaunchBrowser</DockerLaunchAction>-->
+    <DockerServiceUrl>http://localhost/</DockerServiceUrl>
+    <DockerServiceName>api</DockerServiceName>
+    <ContainerDevelopmentMode>Regular</ContainerDevelopmentMode>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

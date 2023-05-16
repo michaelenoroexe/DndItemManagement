@@ -1,0 +1,25 @@
+.controlPanel {
+    display: flex;
+    flex-direction: row-reverse;
+
+    .profilePanel {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+
+        fa-icon {margin-left: 10px;}
+        h4 {margin: 0px;}
+
+        .profileControlPanel {
+            position: absolute;
+            top: 100%;
+            right: 0%;
+
+            width: 100%;
+            height: 300px;
+
+            // background-color: antiquewhite;
+            background-color: magenta;
+        }
+    }
+}
