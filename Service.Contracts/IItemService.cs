@@ -7,6 +7,7 @@ public interface IItemService
 {
     Task<IEnumerable<ItemDto>> GetAllItemsAsync(bool trackChanges);
     Task<IEnumerable<ItemDto>> GetAllItemsForCategoryAsync(int categoryId, bool trackChanges);
+    Task<IEnumerable<ItemDto>> GetAllItemsForDmAsync(int categoryId, bool trackChanges);
     Task<ItemDto> CreateItemAsync(int dmId,
         ItemForCreationDto itemForCreation, bool trackChanges);
     Task DeleteItemAsync(int dmId, int id, bool trackChanges);

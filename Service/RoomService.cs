@@ -106,4 +106,7 @@ internal sealed class RoomService : IRoomService
         mapper.Map(roomForUpdate, roomDb);
         await repository.SaveAsync();
     }
+
+    public async Task<Room> GetFullRoomAsync(int id, bool trackChanges) =>
+        await GetRoomAndCheckIfItExists(id, trackChanges);
 }

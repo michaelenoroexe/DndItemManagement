@@ -6,7 +6,7 @@ using Shared.DataTransferObjects.ItemCategory;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("/api/itemcategories/")]
+    [Route("/api/itemcategories")]
     public class ItemCategoryController : ControllerBase
     {
         private readonly IServiceManager service;
@@ -49,9 +49,6 @@ namespace API.Controllers
         {
             Response.Headers.Add("Allow", 
                 "GET, " +
-//                "POST, " +
-//                "PUT, " +
-//                "DELETE, " +
                 "OPTIONS"
                 );
 

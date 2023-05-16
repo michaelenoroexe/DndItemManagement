@@ -25,4 +25,13 @@ internal sealed class ItemRepository : RepositoryBase<Item>, IItemRepository
         .ToListAsync();
 
     public void DeleteItem(Item item) => Delete(item);
+
+    public async Task<IEnumerable<Item>> GetAllItemsForCategoryAsync
+        (int categoryId, bool trackChanges) =>
+        await FindByCondition(i => i.ItemCategoryId.Equals(categoryId), trackChanges)
+        .ToListAsync();
+
+    public async Task<IEnumerable<Item>> GetAllItemsForDmAsync(int dmId, bool trackChanges) =>
+        await FindByCondition(i => i.ItemCategoryId.Equals(dmId), trackChanges)
+        .ToListAsync();
 }
