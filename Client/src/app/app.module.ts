@@ -12,6 +12,11 @@ import { faAngleDown as fAD, faAngleUp as fAU } from '@fortawesome/free-solid-sv
 import { GenControllPanelComponent } from './gen-control-panel/gen-control-panel.component';
 import { ItemTableComponent } from './workspace/item-table/item-table.component';
 import { ItemElementComponent } from './workspace/item-table/item-element/item-element.component';
+import { WelcomeComponent } from './welcome/welcome.component';
+import { GlobalRoomTableComponent } from './welcome/global-room-table/global-room-table.component';
+import { UnauthorizedMenuComponent } from './welcome/unauthorized-menu/unauthorized-menu.component';
+import { DmMenuComponent } from './welcome/dm-menu/dm-menu.component';
+import { RoomWithDmForFullTableComponent } from './welcome/global-room-table/room-with-dm-for-full-table/room-with-dm-for-full-table.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +24,12 @@ import { ItemElementComponent } from './workspace/item-table/item-element/item-e
     HomeComponent,
     GenControllPanelComponent,
     ItemTableComponent,
-    ItemElementComponent
+    ItemElementComponent,
+    WelcomeComponent,
+    GlobalRoomTableComponent,
+    UnauthorizedMenuComponent,
+    DmMenuComponent,
+    RoomWithDmForFullTableComponent
   ],
   imports: [
     BrowserModule,
