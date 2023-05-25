@@ -1,4 +1,17 @@
 <div class="welcomePanel">
     <app-global-room-table></app-global-room-table>
-    <app-unauthorized-menu></app-unauthorized-menu>
+    <app-unauthorized-menu 
+    (menuStateChange)="menu = $event" 
+    *ngIf="menu == states.Unregistered" 
+    class="menu"></app-unauthorized-menu>
+    <app-registration-menu 
+    (menuStateChange)="menu = $event" 
+    *ngIf="menu == states.Registration"
+    class="menu"></app-registration-menu>
+    <app-signin-menu 
+    *ngIf="menu == states.SigningIn"
+    class="menu"></app-signin-menu>
+    <app-dm-menu 
+    *ngIf="menu == states.Dm"
+    class="menu"></app-dm-menu>
 </div>

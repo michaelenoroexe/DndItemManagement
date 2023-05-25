@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MenuState } from './menu-state';
 
 @Component({
   selector: 'app-welcome',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent {
-
+  menu : MenuState = MenuState.Unregistered
+  states = MenuState
 }

@@ -17,6 +17,8 @@ import { GlobalRoomTableComponent } from './welcome/global-room-table/global-roo
 import { UnauthorizedMenuComponent } from './welcome/unauthorized-menu/unauthorized-menu.component';
 import { DmMenuComponent } from './welcome/dm-menu/dm-menu.component';
 import { RoomWithDmForFullTableComponent } from './welcome/global-room-table/room-with-dm-for-full-table/room-with-dm-for-full-table.component';
+import { RegistrationMenuComponent } from './welcome/registration-menu/registration-menu.component';
+import { SigninMenuComponent } from './welcome/signin-menu/signin-menu.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,9 @@ import { RoomWithDmForFullTableComponent } from './welcome/global-room-table/roo
     GlobalRoomTableComponent,
     UnauthorizedMenuComponent,
     DmMenuComponent,
-    RoomWithDmForFullTableComponent
+    RoomWithDmForFullTableComponent,
+    RegistrationMenuComponent,
+    SigninMenuComponent
   ],
   imports: [
     BrowserModule,

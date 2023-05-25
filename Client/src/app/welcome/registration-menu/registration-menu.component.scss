@@ -1,0 +1,22 @@
+.registrationMenu {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    h2 {
+        text-align: center;
+    }
+    input {
+        margin-bottom: 20px;
+    }
+    .back {
+        position: absolute;
+        border: 0px;
+        padding: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    .back:hover {
+        border: 1px solid black !important;
+    }
+}
