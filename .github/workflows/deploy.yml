@@ -34,36 +34,33 @@ jobs:
         run: | 
             docker build -t db/management:1.0 ./DB/
             docker run \
-            -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
-            -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
-            -p 1401:1433 \
-            -v sql-item-manage:/var/opt/mssql \
-            -d \
-            --net=dnd-network \
-            --name DndItem \
-            db/management:1.0
+              -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
+              -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
+              -p 1401:1433 \
+              -v sql-item-manage:/var/opt/mssql \
+              -d \
+              --net=dnd-network \
+              --name DndItem \
+              db/management:1.0
       # Create API
       - name: Create ASP API
         run: |
             docker build -t net/api:1.0 ./ -f ./API/Dockerfile
             docker run \
-            -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
-            -e "SECRET=${{secrets.SECRET}}" \
-            -p 5136:80 \
-            --net=dnd-network \
-            --name API \
-            net/api:1.0
+              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
+              -e "SECRET=${{secrets.SECRET}}" \
+              -p 5136:80 \
+              -d \
+              --net=dnd-network \
+              --name API \
+              net/api:1.0
       # Create Client
       - name: Create client
         run: |
             docker build -t nginx/client:1.0 ./Client/
             docker run \
-            -p 80:80 \
-            --net=dnd-network \
-            --name Client \
-            nginx/client:1.0
-
-
-
-        
-
+              -p 80:80 \
+              -d \
+              --net=dnd-network \
+              --name Client \
+              nginx/client:1.0
