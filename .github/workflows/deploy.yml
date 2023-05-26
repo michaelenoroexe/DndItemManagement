@@ -32,6 +32,7 @@ jobs:
         run: docker volume create sql-item-manage
       - name: Run DB
         run: | 
+            docker build -t db/management:1.0 ./DB/Dockerfile
             docker run \
             -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
             -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
@@ -40,7 +41,7 @@ jobs:
             -d \
             --net=dnd-network \
             --name DndItem \
-            mcr.microsoft.com/mssql/server
+            db/management
 
       - name: Create DB structure
         run: |
