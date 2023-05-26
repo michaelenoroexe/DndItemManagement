@@ -43,10 +43,6 @@ jobs:
             --name DndItem \
             db/management:1.0
       # Create API
-      - name: AllFolders
-        run: |
-             cd ./API
-             ls
       - name: Create ASP API
         run: |
             docker build -t net/api:1.0 ./API/
