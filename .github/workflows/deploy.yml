@@ -46,13 +46,11 @@ jobs:
       # Create API
       - name: Create API image
         run: docker build -t net/api:1.0 . -f ./API/Dockerfile
-      - name: Test
-        run: docker images
-      - name: Create ASP API
+      - name: Run ASP API
         run: | 
             docker run \
               -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
-              -e "SECRET=${{secrets.SECRET}}" \
+              -p 5136:80 \
               -d \
               --net=dnd-network \
               --name MainAPI \
