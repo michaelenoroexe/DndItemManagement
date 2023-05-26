@@ -48,14 +48,7 @@ jobs:
         run: docker build -t net/api:1.0 . -f ./API/Dockerfile
       - name: Create ASP API
         run: |
-            docker run \
-              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
-              -e "SECRET=${{secrets.SECRET}}" \
-              -p 5136:80 \
-              -d \
-              --net=dnd-network \
-              --name API \
-              net/api:1.0
+            docker run -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" -e "SECRET=${{secrets.SECRET}}" -p 5136:80 -d --net=dnd-network --name API net/api:1.0
       # Create Client
       - name:
         run: docker build -t nginx/client:1.0 ./Client/
