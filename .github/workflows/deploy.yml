@@ -37,6 +37,7 @@ jobs:
             -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
             -p 1401:1433 \
             -v sql-item-manage:/var/opt/mssql \
+            -d \
             --net=dnd-network \
             --name DndItem \
             mcr.microsoft.com/mssql/server
