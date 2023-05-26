@@ -49,7 +49,7 @@ jobs:
       - name: Run ASP API
         run: | 
             docker run \
-              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
+              -e "SECRET=${{secrets.SECRET}}" \
               -p 5136:80 \
               -d \
               --net=dnd-network \
@@ -58,7 +58,7 @@ jobs:
       # Create Client
       - name: Create Client image
         run: docker build -t nginx/client:1.0 ./Client/
-      - name: Create client
+      - name: Run client
         run: |
             docker run \
               -p 80:80 \
