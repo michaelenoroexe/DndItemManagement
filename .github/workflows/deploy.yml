@@ -32,7 +32,7 @@ jobs:
         run: docker volume create sql-item-manage
       - name: Run DB
         run: | 
-            docker build -t db/management:1.0 ./DB/Dockerfile
+            docker build -t db/management:1.0 ./DB/
             docker run \
             -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
             -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
@@ -49,7 +49,7 @@ jobs:
       # Create API
       - name: Create ASP API
         run: |
-            docker build -t net/api:1.0 ./API/Dockerfile
+            docker build -t net/api:1.0 ./API/
             docker run \
             -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
             -e "SECRET=${{secrets.SECRET}}" \
@@ -60,7 +60,7 @@ jobs:
       # Create Client
       - name: Create client
         run: |
-            docker build -t nginx/client:1.0 ./Client/Dockerfile
+            docker build -t nginx/client:1.0 ./Client/
             docker run \
             -p 80:80 \
             --net=dnd-network \
