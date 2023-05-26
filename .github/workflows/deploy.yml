@@ -41,7 +41,7 @@ jobs:
             -d \
             --net=dnd-network \
             --name DndItem \
-            db/management
+            db/management:1.0
 
       - name: Create DB structure
         run: |
@@ -56,7 +56,7 @@ jobs:
             -p 5136:80 \
             --net=dnd-network \
             --name API \
-            net/api
+            net/api:1.0
       # Create Client
       - name: Create client
         run: |
@@ -65,7 +65,7 @@ jobs:
             -p 80:80 \
             --net=dnd-network \
             --name Client \
-            nginx/client
+            nginx/client:1.0
 
 
 
