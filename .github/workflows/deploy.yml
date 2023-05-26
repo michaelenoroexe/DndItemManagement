@@ -45,13 +45,16 @@ jobs:
               db/management:1.0
       # Create API
       - name: Create API image
-        run: docker build -t dot-net/api:1.0 . -f ./API/Dockerfile
+        run: docker build -t net/api:1.0 . -f ./API/Dockerfile
       - name: Test
         run: docker images
       - name: Create ASP API
-        run: docker run dot-net/api:1.0
+        run: | 
+            docker run \
+              -d \
+              net/api:1.0
       # Create Client
-      - name:
+      - name: Create Client image
         run: docker build -t nginx/client:1.0 ./Client/
       - name: Create client
         run: |
