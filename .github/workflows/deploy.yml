@@ -51,6 +51,8 @@ jobs:
       - name: Create ASP API
         run: | 
             docker run \
+              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
+              -e "SECRET=${{secrets.SECRET}}" \
               -d \
               --net=dnd-network \
               --name MainAPI \
