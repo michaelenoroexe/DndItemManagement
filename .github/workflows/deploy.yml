@@ -45,9 +45,17 @@ jobs:
               db/management:1.0
       # Create API
       - name: Create API image
-        run: docker build -t net/api:1.0 . -f ./API/Dockerfile
+        run: docker build -t dot-net/api:1.0 . -f ./API/Dockerfile
       - name: Create ASP API
-        run: docker run -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" -e "SECRET=${{secrets.SECRET}}" -p 5136:80 -d --net=dnd-network --name API net/api:1.0
+        run: |
+            docker run \
+              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
+              -e "SECRET=${{secrets.SECRET}}" \
+              -p 5136:80 \
+              -d \
+              --net=dnd-network \
+              --name MainAPI \
+              dot-net/api:1.0
       # Create Client
       - name:
         run: docker build -t nginx/client:1.0 ./Client/
