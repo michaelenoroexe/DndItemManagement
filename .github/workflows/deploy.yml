@@ -45,7 +45,7 @@ jobs:
       # Create API
       - name: Create ASP API
         run: |
-            docker build -t net/api:1.0 ./ ./API/
+            docker build -t net/api:1.0 ./ -f ./API/Dockerfile
             docker run \
             -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
             -e "SECRET=${{secrets.SECRET}}" \
