@@ -46,6 +46,8 @@ jobs:
       # Create API
       - name: Create API image
         run: docker build -t dot-net/api:1.0 . -f ./API/Dockerfile
+      - name: Test
+        run: docker images
       - name: Create ASP API
         run: |
             docker run \
