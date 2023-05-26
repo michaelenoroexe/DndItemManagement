@@ -45,7 +45,7 @@ jobs:
       - name: Create DB structure
         run: |
             docker exec -i DndItem "bash"
-            /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{secrets.SA_PASSWORD}} -i .\Scripts\DB.sql
+            /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{secrets.SA_PASSWORD}} -i ./Scripts/DB.sql
       # Create API
       - name: Create ASP API
         run: |
