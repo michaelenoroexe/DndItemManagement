@@ -34,7 +34,7 @@ jobs:
         run: | 
             docker run \
             -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
-            -e "MSSQL_SA_PASSWORD=${{vars.SA_PASSWORD}}" \
+            -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
             -p 1401:1433 \
             -v sql-item-manage:/var/opt/mssql \
             --net=dnd-network \
@@ -44,14 +44,14 @@ jobs:
       - name: Create DB structure
         run: |
             docker exec -it DndItem "bash"
-            /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{vars.SA_PASSWORD}} -i C:\Scripts\DB.sql
+            /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{secrets.SA_PASSWORD}} -i C:\Scripts\DB.sql
       # Create API
       - name: Create ASP API
         run: |
             docker build -t net/api:1.0 ./API/Dockerfile
             docker run \
-            -e "CONNECTION_STRING=${{vars.CONNECTION_STRING}}" \
-            -e "SECRET=${{vars.SECRET}}" \
+            -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
+            -e "SECRET=${{secrets.SECRET}}" \
             -p 5136:80 \
             --net=dnd-network \
             --name API \
