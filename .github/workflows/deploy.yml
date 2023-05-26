@@ -41,11 +41,7 @@ jobs:
             -d \
             --net=dnd-network \
             --name DndItem \
-            db/management
-
-      - name: Create DB structure
-        run: |
-            docker exec DndItem /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{secrets.SA_PASSWORD}} -i ./Scripts/DB.sql
+            db/management:1.0
       # Create API
       - name: Create ASP API
         run: |
@@ -56,7 +52,7 @@ jobs:
             -p 5136:80 \
             --net=dnd-network \
             --name API \
-            net/api
+            net/api:1.0
       # Create Client
       - name: Create client
         run: |
@@ -65,7 +61,7 @@ jobs:
             -p 80:80 \
             --net=dnd-network \
             --name Client \
-            nginx/client
+            nginx/client:1.0
 
 
 
