@@ -42,10 +42,6 @@ jobs:
             --net=dnd-network \
             --name DndItem \
             db/management:1.0
-
-      - name: Create DB structure
-        run: |
-            docker exec DndItem /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P ${{secrets.SA_PASSWORD}} -i ./Scripts/DB.sql
       # Create API
       - name: Create ASP API
         run: |
