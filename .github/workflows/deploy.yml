@@ -52,6 +52,8 @@ jobs:
         run: | 
             docker run \
               -d \
+              --net=dnd-network \
+              --name MainAPI \
               net/api:1.0
       # Create Client
       - name: Create Client image
