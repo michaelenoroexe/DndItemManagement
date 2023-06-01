@@ -13,6 +13,11 @@ internal sealed class RoomRepository : RepositoryBase<Room>, IRoomRepository
     await FindAll(trackChanges)
     .OrderBy(c => c.Name)
     .ToListAsync();
+    public async Task<IEnumerable<Room>> GetAllRoomsWithDmsAsync(bool trackChanges) =>
+    await FindAll(trackChanges)
+    .Include(r => r.DM)
+    .OrderBy(c => c.Name)
+    .ToListAsync();
 
     public async Task<Room?> GetRoomAsync(int roomId, bool trackChanges) =>
         await FindByCondition(c => c.Id.Equals(roomId), trackChanges)

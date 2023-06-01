@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Exceptions.DM;
 using Entities.Exceptions.Item;
+using Entities.Exceptions.Room;
 using Entities.Models;
 using Repository.Contracts;
 using Shared.DataTransferObjects.Item;
@@ -17,6 +18,11 @@ namespace Service.Contracts
         {
             var dm = await repository.DM.GetDMAsync(dmId, false);
             if (dm is null) throw new DMNotFoundException(dmId);
+        }
+        private async Task CheckIfRoomExists(int roomId)
+        {
+            var room = await repository.Room.GetRoomAsync(roomId, false);
+            if (room is null) throw new RoomNotFoundException(roomId);
         }
         private async Task<Item> GetItemAndCheckIfItExists(int itemId, bool trackChanges)
         {
@@ -62,10 +68,10 @@ namespace Service.Contracts
             return itemsToReturn;
         }
 
-        public async Task<ItemDto> CreateItemAsync(int dmId,
+        public async Task<ItemDto> CreateItemAsync(int roomId,
             ItemForCreationDto itemForCreation, bool trackChanges)
         {
-            await CheckIfDmExists(dmId);
+            await CheckIfRoomExists(roomId);
 
             var itemEntity = mapper.Map<Item>(itemForCreation);
 
@@ -77,19 +83,19 @@ namespace Service.Contracts
             return itemToReturn;
         }
 
-        public async Task DeleteItemAsync(int dmId, int id, bool trackChanges)
+        public async Task DeleteItemAsync(int roomId, int id, bool trackChanges)
         {
-            await CheckIfDmExists(dmId);
+            await CheckIfRoomExists(roomId);
             var item = await GetItemAndCheckIfItExists(id, trackChanges);
 
             repository.Item.DeleteItem(item);
             await repository.SaveAsync();
         }
 
-        public async Task UpdateItemAsync(int dmId, int id,
-            ItemForUpdateDto itemForUpdate, bool dmTrackChanges, bool itemTrackChanges)
+        public async Task UpdateItemAsync(int roomId, int id,
+            ItemForUpdateDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges)
         {
-            await CheckIfDmExists(dmId);
+            await CheckIfRoomExists(roomId);
             var itemDb = await GetItemAndCheckIfItExists(id, itemTrackChanges);
 
             mapper.Map(itemForUpdate, itemDb);
@@ -97,9 +103,9 @@ namespace Service.Contracts
         }
 
         public async Task<(ItemForUpdateDto itemToPatch, Item itemEntity)> GetItemForPatchAsync(
-            int dmId, int id, bool dmTrackChanges, bool itemTrackChanges)
+            int roomId, int id, bool roomTrackChanges, bool itemTrackChanges)
         {
-            await CheckIfDmExists(dmId);
+            await CheckIfRoomExists(roomId);
             var itemDb = await GetItemAndCheckIfItExists(id, itemTrackChanges);
 
             var itemToPatch = mapper.Map<ItemForUpdateDto>(itemDb);

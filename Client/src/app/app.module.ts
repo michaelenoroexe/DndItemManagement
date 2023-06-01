@@ -19,6 +19,11 @@ import { DmMenuComponent } from './welcome/dm-menu/dm-menu.component';
 import { RoomWithDmForFullTableComponent } from './welcome/global-room-table/room-with-dm-for-full-table/room-with-dm-for-full-table.component';
 import { RegistrationMenuComponent } from './welcome/registration-menu/registration-menu.component';
 import { SigninMenuComponent } from './welcome/signin-menu/signin-menu.component';
+import { RoomManagementComponent } from './room-management/room-management.component';
+import { FullRoomComponent } from './room-management/full-room/full-room.component';
+import { CharacterForRoomManagementComponent } from './room-management/full-room/character-for-room-management/character-for-room-management.component';
+import { DmPlayComponent } from './dm-play/dm-play.component';
+import { CharacterPlayComponent } from './character-play/character-play.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,12 @@ import { SigninMenuComponent } from './welcome/signin-menu/signin-menu.component
     DmMenuComponent,
     RoomWithDmForFullTableComponent,
     RegistrationMenuComponent,
-    SigninMenuComponent
+    SigninMenuComponent,
+    RoomManagementComponent,
+    FullRoomComponent,
+    CharacterForRoomManagementComponent,
+    DmPlayComponent,
+    CharacterPlayComponent
   ],
   imports: [
     BrowserModule,

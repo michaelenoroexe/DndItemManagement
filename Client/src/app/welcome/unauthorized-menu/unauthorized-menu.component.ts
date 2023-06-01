@@ -11,7 +11,7 @@ export class UnauthorizedMenuComponent {
   @Output()
   menuStateChange = new EventEmitter<MenuState>
   
-  Register() {
-    this.menuStateChange.emit(MenuState.Registration);
-  }
+  SignIn() { this.menuStateChange.emit(MenuState.SigningIn) }
+
+  Register() { this.menuStateChange.emit(MenuState.Registration) }
 }

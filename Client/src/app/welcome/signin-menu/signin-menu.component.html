@@ -1,1 +1,10 @@
-<p>signin-menu works!</p>
+<div class="signinMenu">
+    <h2>Sign in</h2>
+    <label>Login</label>
+    <input type="text" [(ngModel)]="login">
+    <label>Password</label>
+    <input type="password" [(ngModel)]="password">
+    <button class="submit" (click)="SignIn()">Submit</button>
+    <div class="LoginErrors"></div>
+    <button class="back" (click)="Back()">&lt;</button>
+</div>

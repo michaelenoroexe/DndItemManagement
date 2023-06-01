@@ -1,10 +1,10 @@
 <div class="registrationMenu">
     <h2>Register</h2>
     <label>Login</label>
-    <input type="text">
+    <input type="text" [(ngModel)]="login">
     <label>Password</label>
-    <input type="password">
-    <button class="submit">Submit</button>
+    <input type="password" [(ngModel)]="password">
+    <button class="submit" (click)="Register()">Submit</button>
     <div class="registrationErrors"></div>
     <button class="back" (click)="Back()">&lt;</button>
 </div>

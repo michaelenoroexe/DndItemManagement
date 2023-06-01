@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { MenuState } from '../menu-state';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environment';
+import { DmService } from 'src/app/services/dm.service';
 
 @Component({
   selector: 'app-registration-menu',
@@ -15,12 +16,21 @@ export class RegistrationMenuComponent {
 
   login!: string;
   password!: string;
+  errorMessage: string = "";
 
-  constructor(private http:HttpClient) {}
+  constructor(private dmService:DmService) {}
 
   Register() {
-    const user = {Login:this.login, Password:this.password};
-    this.http.post(environment.apiURL + "dm", user);
+    const th = this;
+    this.dmService.Register(this.login, this.password).subscribe({
+      next(value) {
+        th.menuStateChange.emit(MenuState.SigningIn);
+      },
+      error(err) {
+          th.errorMessage = err.value;
+      },
+    });
+    
   }
 
   Back() {

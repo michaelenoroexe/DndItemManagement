@@ -46,6 +46,13 @@ internal sealed class DMService : IDMService
         var dm = mapper.Map<DMDto>(dmDb);
         return dm;
     }
+    public async Task<DMDto> GetDMAsync(string login, bool trackChanges)
+    {
+        var dmDb = await repository.DM.GetDmByNameAsync(login, trackChanges);
+
+        var dm = mapper.Map<DMDto>(dmDb);
+        return dm;
+    }
 
     public async Task<(DMForUpdateDto dmToPatch, DM dmEntity)> GetDMForPatchAsync(int id, bool dmTrackChanges)
     {

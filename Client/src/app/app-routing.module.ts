@@ -1,9 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { WelcomeComponent } from './welcome/welcome.component';
+import { RoomManagementComponent } from './room-management/room-management.component';
+import { DmPlayComponent } from './dm-play/dm-play.component';
+import { CharacterPlayComponent } from './character-play/character-play.component';
 
 const routes: Routes = [
-  { path: "", component: WelcomeComponent }
+  { path: "", component: WelcomeComponent },
+  { path: "rooms", component: RoomManagementComponent },
+  { path: "dm/play", component: DmPlayComponent },
+  { path: "character/play", component: CharacterPlayComponent },
 ];
 
 @NgModule({

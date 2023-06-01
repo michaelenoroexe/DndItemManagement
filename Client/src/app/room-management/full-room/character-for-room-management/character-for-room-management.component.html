@@ -1,0 +1,10 @@
+<div class="characterSegment">
+    <input type="text" 
+    #characterName 
+    [(ngModel)] ="character.name" 
+    [readOnly]="!edited"
+    (blur)="ApplyCharacterNameChange()"
+    >
+    <button class="changeButton" (click)="UpdateCharacterName()"><fa-icon [icon]="penIcon"></fa-icon></button>
+    <button class="deleteButton"><fa-icon [icon]="delIcon"></fa-icon></button>
+</div>

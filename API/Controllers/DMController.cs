@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.DM;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -18,8 +19,15 @@ namespace API.Controllers
         public async Task<IActionResult> GetDms() 
         {
             var dms = await service.DMService.GetAllDMs(false);
-
             return Ok(dms);
+        }
+        [HttpGet("full")]
+        public async Task<IActionResult> GetDm()
+        {
+            var name = User.FindFirst(ClaimTypes.Name)?.Value;
+            if (name is null) return NoContent();
+            var dm = await service.DMService.GetDMAsync(name, false);
+            return Ok(dm);
         }
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -28,6 +36,18 @@ namespace API.Controllers
             var dm = await service.DMService.RegisterDMAsync(dMForRegistration);
 
             return Created("/api/dm", dm);
+        }
+        [HttpPost("login")]
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
+        public async Task<IActionResult> SignInDm([FromBody] DMForAuthenticationDto dMForAuth)
+        {
+            var res = await service.AuthenticationService.ValidateDM(dMForAuth);
+            if (res == false) return ValidationProblem();
+            var character = User.FindFirst(ClaimTypes.Actor)?.Value;
+            var token = service.AuthenticationService
+                .CreateToken(dMForAuth.Login, (character is null)? null : Convert.ToInt32(character));
+
+            return Ok(new { token = $"Bearer {token}" });
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteDm(int id) 

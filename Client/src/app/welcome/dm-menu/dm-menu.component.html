@@ -1,1 +1,14 @@
-<p>dm-menu works!</p>
+<div class="dmMenu">
+    <h2>{{dm.login}}</h2>
+    <div class="dmRoomList">
+        <div 
+        *ngFor="let item of rooms"
+        class="roomList">
+            {{item.name}}
+            <button>Start</button>
+        </div>
+        <button class="addNewButton" (click)="AddNewRoom()">+</button>
+    </div>
+    <button class="redirectButton" routerLink="rooms">Room management</button>
+    <button class="exit" (click)="Exit()">Exit</button>
+</div>

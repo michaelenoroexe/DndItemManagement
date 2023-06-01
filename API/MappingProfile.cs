@@ -18,6 +18,8 @@ public class MappingProfile : Profile
         CreateMap<DMForUpdateDto, DM>().ReverseMap();
 
         CreateMap<Room, RoomDto>();
+        CreateMap<Room, RoomWithDMDto>().ForCtorParam("DMName",
+            opt => opt.MapFrom(room => room.DM.Login));
         CreateMap<RoomForCreationDto, Room>();
         CreateMap<RoomForUpdateDto, Room>().ReverseMap();
 

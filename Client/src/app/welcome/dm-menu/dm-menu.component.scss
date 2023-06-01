@@ -1,0 +1,40 @@
+.dmMenu {
+    position: relative;
+    height: 100%;
+    padding: 10px;
+    h2 {
+        text-align: center;
+    }
+    .dmRoomList {
+        height: 395px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        gap: 10px;
+        .roomList {
+            display: grid;
+            grid-template-columns: auto 50px;
+        }
+        .addNewButton {
+            border: 0px;
+        }
+        .addNewButton:hover {
+            background-color: darkgrey;
+        }
+    }
+    .exit {
+        top: 5px;
+        left: 5px;
+        position: absolute;
+        border: 0px;
+        padding: 0px;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+    .exit:hover {
+        border: 1px solid black !important;
+    }
+    .redirectButton {
+        width: 100%;
+    }
+}

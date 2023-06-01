@@ -1,0 +1,21 @@
+<div class="roomManagement">
+    <h1>Room Management</h1>
+    <app-full-room 
+    *ngFor="let room of rooms" 
+    class="room"
+    [room]="room"></app-full-room>
+    <button class="addNewButton" (click)="OpenRoomInfoPanel()">+</button>
+    <div class="roomInfoContainer" *ngIf="change">
+        <div class="roomInfo">
+            <h2>Room info</h2>
+            <label>Name</label>
+            <input type="text" [(ngModel)]="changedRoomName">
+            <label>Password</label>
+            <input type="text" [(ngModel)]="changedPassword">
+            <button (click)="currAction()">Save</button>
+            <button (click)="CloseInfo()"
+                class="backButton">Back</button>
+        </div>
+    </div>
+    <button class="backButton" routerLink="/">Back</button>
+</div>  
