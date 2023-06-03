@@ -1,0 +1,11 @@
+<div class="playItemHide" *ngIf="!full">
+    <h4>{{itemInfo.name}}</h4>
+    <div class="durability">
+        <input type="text" [(ngModel)]="item.currentDurability" name="currentDurability">
+        <label for="currentDurability">/{{itemInfo.maxDurability}}</label>
+    </div>
+    <input type="text" [(ngModel)]="item.number" name="owned">
+</div>
+<div class="playItemFull" *ngIf="full">
+
+</div>

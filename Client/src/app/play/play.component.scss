@@ -1,0 +1,24 @@
+.full {
+    background-color: beige;
+    height: 100%;
+    h2 {
+        text-align: center;
+        margin: 0px;
+        padding-top: 5px;
+        padding-bottom: 10px;
+        border-bottom: 2px gray solid;
+    }
+    .categoriesBlock {
+        overflow-y: scroll;
+        height: calc(100% - 45px);
+        row-gap: 20px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-content: flex-start;
+        app-category {
+            height: fit-content;
+        }
+    }
+}

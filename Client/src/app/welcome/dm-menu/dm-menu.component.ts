@@ -24,7 +24,7 @@ export class DmMenuComponent {
   }
 
   AddNewRoom() {
-    this.router.navigate(['rooms', {add:true}])
+    this.router.navigate(['rooms', {add:true}]);
   }
 
   Exit() {

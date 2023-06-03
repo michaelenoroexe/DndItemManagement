@@ -35,7 +35,7 @@ CREATE TABLE Items (
   ItemMaxDurability INT NOT NULL DEFAULT(1),
   Price INT NOT NULL DEFAULT(0),
   Weight REAL NOT NULL DEFAULT(0),
-  ItemCategory INT FOREIGN KEY REFERENCES ItemCategories(CategoryID) NOT NULL,
+  ItemCategoryId INT FOREIGN KEY REFERENCES ItemCategories(CategoryID) NOT NULL,
   SecretItemDescription VARCHAR(1000) NULL,
   ItemDescription NVARCHAR(1500) NULL,
   RoomId INT FOREIGN KEY REFERENCES Rooms(RoomID) NULL

@@ -69,7 +69,7 @@ internal sealed class CharacterItemsService : ICharacterItemsService
     {
         await CheckIfCharacterExists(characterId, trackChanges);
 
-        var chItemsDb = repository.CharacterItem.GetCharacterItemsAsync(characterId, trackChanges);
+        var chItemsDb = await repository.CharacterItem.GetCharacterItemsAsync(characterId, trackChanges);
 
         var CharacterItemToReturn = mapper.Map<IEnumerable<CharacterItemDto>>(chItemsDb);
 

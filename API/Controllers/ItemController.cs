@@ -21,7 +21,13 @@ namespace API.Controllers
 
             return Ok(items);
         }
+        [HttpGet("items")]
+        public async Task<IActionResult> GetAllItems()
+        {
+            var items = await service.ItemService.GetAllItemsAsync(false);
 
+            return Ok(items);
+        }
         [HttpGet("dm/{dmId}/items")]
         public async Task<IActionResult> GetAllItemsForDM(int dmId)
         {

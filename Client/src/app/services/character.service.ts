@@ -10,11 +10,14 @@ import { Character } from "../model/character";
 export class CharacterService {
 
     constructor(private http:HttpClient, private dmService:DmService) { }
-
+    GetCharacterObserv(roomId:number) {
+        return this.http
+        .get<Character[]>(`${environment.apiURL}dm/${this.dmService.dm.id}/rooms/${roomId}/characters`)
+    }
     GetCharacters(roomId:number): Character[] {
         const characters: Character[] = [];
         this.http
-        .get<Character[]>(`${environment.apiURL}dm/${this.dmService.dm.id}/rooms/${roomId}/characters`)
+        this.GetCharacterObserv(roomId)
         .subscribe({
             next(value:Character[]) {
                 value.forEach((ch:Character) => {characters.push(ch)});

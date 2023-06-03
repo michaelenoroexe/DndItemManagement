@@ -1,0 +1,24 @@
+.categoryBlock {
+    display: flex;
+    flex-direction: column;
+    border: 1px gray solid;
+    height: fit-content;
+    overflow-y: auto;
+    width: 325px;
+    h3 {
+        top: auto;
+        position: sticky;
+        margin: 5px;
+        padding: 10px;
+        border-bottom: 1px gray solid;
+        text-align: center;
+    }
+    .itemList {
+        display: flex;
+        flex-direction: column;
+        .addButton {
+            margin: auto;
+            width: 50%;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+<div class="categoryBlock">
+    <h3>{{category.name}}</h3>
+    <div class="itemList">
+        <app-play-item
+        *ngFor="let item of characterItems"
+        ></app-play-item>
+        <div class="newCharacterItem" *ngIf="addNewCharacterItem">
+            <mat-form-field>
+                <mat-label>Item</mat-label>
+                <select matNativeControl required #itemSelect (change)='ItemChangeForChItem(itemSelect.value)'>
+                    <option value="" [defaultSelected]="true"></option>
+                    <option *ngFor="let item of itemsForCategory" [value]="item">{{item.name}}</option>
+                    <option value="New" (click)="CreateNewItem()">+</option>
+                </select>
+            </mat-form-field>
+            <input type="number" name="number">
+            <div class="control">
+                <button>Accept</button>
+                <button>Cancel</button>
+            </div>
+
+        </div>
+        <button class="addButton" 
+        *ngIf="!addNewCharacterItem" 
+        (click)="CreateNewCharacterItem()">+</button>
+    </div>
+</div>

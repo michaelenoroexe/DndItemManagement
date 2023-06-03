@@ -1,0 +1,12 @@
+<div class="playBlock" [class.full]="full" [class.slim]="slim">
+    <h2>{{character.name}}</h2>
+    <div class="categoriesBlock">
+        <app-category
+        *ngFor="let category of itemService.itemCategories"
+        [category]="category"
+        [characterItems]="characterItems[category.id]"
+        >
+        </app-category>
+    </div>
+</div>
+
