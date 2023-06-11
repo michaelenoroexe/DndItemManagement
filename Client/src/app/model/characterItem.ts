@@ -1,7 +1,7 @@
 export class CharacterItem {
-    caracterId:number;
+    characterId:number;
     itemId:number;
-    number:number;
+    itemNumber:number;
     currentDurability:number;
 
     constructor(
@@ -9,8 +9,9 @@ export class CharacterItem {
         itemId:number, 
         number:number, 
         currentDurability:number) {
-        this.caracterId = characterId;
+        this.characterId = characterId;
         this.itemId = itemId;
-        this.number = number;        this.currentDurability = currentDurability;
+        this.itemNumber = number;        
+        this.currentDurability = currentDurability;
     }
 }

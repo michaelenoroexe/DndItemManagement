@@ -30,6 +30,7 @@ import { CategoryComponent } from './play/category/category.component';
 import { PlayItemComponent } from './play/category/play-item/play-item.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemManagementComponent } from './item-management/item-management.component';
+import { JoinRoomComponent } from './join-room/join-room.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ItemManagementComponent } from './item-management/item-management.compo
     PlayComponent,
     CategoryComponent,
     PlayItemComponent,
-    ItemManagementComponent
+    ItemManagementComponent,
+    JoinRoomComponent
   ],
   imports: [
     BrowserModule,

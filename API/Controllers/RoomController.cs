@@ -24,7 +24,20 @@ namespace API.Controllers
             this.service = service;
             this.roomHub = hub;
         }
+        [HttpGet("rooms/{id}")]
+        public async Task<IActionResult> GetRooms(int id)
+        {
+            var room = await service.RoomService.GetRoomAsync(id, false);
 
+            return Ok(room);
+        }
+        [HttpGet("dm/{dmId}/rooms")]
+        public async Task<IActionResult> GetDmRooms(int dmId)
+        {
+            var rooms = await service.RoomService.GetRoomsForDM(dmId, false);
+
+            return Ok(rooms);
+        }
         [HttpGet("rooms")]
         public async Task<IActionResult> GetRooms()
         {

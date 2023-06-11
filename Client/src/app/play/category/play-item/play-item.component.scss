@@ -1,0 +1,72 @@
+.playItemHide {
+  border: 1px transparent solid;
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  h4 {
+    margin: 0px;
+  }
+  input {
+    width: 30px;
+  }
+  .durability {
+    display: flex;
+    flex-direction: row;
+  }
+  fa-icon {
+    position: absolute;
+    right: 10px;
+  }
+}
+.playItemHide:hover {
+  border: 1px gray solid;
+}
+.playItemFull {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+  .itemName {
+    text-align: center;
+    width: 50%;
+    font-size: large;
+  }
+  .generalInfo {
+    padding: 0px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    label {
+      width: 50px;
+    }
+    input {
+      width: 50px;
+    }
+    .durability {
+      input {
+        margin-right: 5px;
+      }
+    }
+    .description {
+      display: flex;
+      flex-direction: column;
+      textarea {
+        width: 100%;
+        height: 70px;
+      }
+    }
+  }
+  .controll {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  fa-icon {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    transform: scale(1, -1);
+  }
+}

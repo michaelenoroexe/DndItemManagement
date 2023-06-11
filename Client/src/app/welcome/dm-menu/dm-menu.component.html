@@ -5,7 +5,7 @@
         *ngFor="let item of rooms"
         class="roomList">
             {{item.name}}
-            <button>Start</button>
+            <button [routerLink]="['dm/play', {roomId:item.id}]">Start</button>
         </div>
         <button class="addNewButton" (click)="AddNewRoom()">+</button>
     </div>

@@ -16,9 +16,6 @@ export class PlayComponent implements OnInit {
   character!:Character;
   @Input()
   full:boolean = true;
-  @Input()
-  slim:boolean = false;
-
   characterItems:{[categoryId:number]:CharacterItem[]} = {};
 
 
@@ -26,12 +23,12 @@ export class PlayComponent implements OnInit {
     public itemService:ItemService, 
     private chItemService:CharacterItemService) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     const chItems = this.chItemService.GetCharacterItems(this.roomId, this.character.id);
-    this.itemService.itemCategories
+    (await this.itemService.GetCategories())
     .forEach(ic => {
-      const itemsOfCateg = this.itemService.items
-        .filter(i => i.itemCategoryId == ic.id);
+      const itemsOfCateg = this.itemService.items[ic.id];
+      if (itemsOfCateg != undefined)
       this.characterItems[ic.id] = chItems
         .filter(ci => itemsOfCateg.some(ioc => ci.itemId == ioc.id ));
     })

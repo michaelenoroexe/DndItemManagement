@@ -12,22 +12,23 @@ export class DmService {
     public dm: DM = {id:0, login:""};
 
     public constructor(private http: HttpClient) {
-        this.GetFullDm();
+        var th = this;
+        this.GetFullDm().then(responce => {
+            const res = responce as any;
+            if (res.status != 204) {
+                th.dm.id = res.body.id;
+                th.dm.login = res.body.login;
+            }
+        })
     }
     public async GetFullDm() {
         var th = this;
         const token = localStorage.getItem("Token");
         return firstValueFrom(th.http.get(environment.apiURL+"dm/full", 
         {
-            headers: {"Authorization": token ?? ""},
+            headers: {"Authorization": "Bearer " + token ?? ""},
             observe: 'response'
-        })).then(responce => {
-            const res = responce as any;
-            if (res.status != 204) {
-                th.dm.id = res.body.id;
-                th.dm.login = res.body.login;
-            }
-        });
+        }));
     }
     public Register(login:string, password:string) {
         const dm = {login:login, password:password};
@@ -40,7 +41,7 @@ export class DmService {
         if (token == null)
             options = {}
         else
-            options = {headers:{"Authorization": token}}
+            options = {headers:{"Authorization": "Bearer " + token}}
         return this.http.post(environment.apiURL + "dm/login", dm, options);
     }
     public Logout() {

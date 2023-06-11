@@ -1,1 +1,63 @@
-<p>item-management works!</p>
+<div class="managementBlock">
+  <div class="allItemsBlock">
+    <h1>{{room.name}}</h1>
+    <div class="sections">
+      <div class="section" *ngFor="let sec of itemService.itemCategories">
+        <h2>{{sec.name}}</h2>
+        <div class="items" *ngFor="let item of itemService.items[sec.id]">
+          <div class="controll">
+            <h3>{{item.name}}</h3>
+            <button class="changeButton" (click)="SelectItemForChange(item)"><fa-icon [icon]="penIcon"></fa-icon></button>
+            <button class="deleteButton"><fa-icon [icon]="delIcon"></fa-icon></button>
+          </div>
+          <div class="generalInfo">
+            <label>MaxDurability</label><h4>{{item.maxDurability}}</h4>
+            <label>Price</label><h4>{{item.price}}</h4>
+            <label>Weight</label><h4>{{item.weight}}</h4>
+            <label>Description</label>
+            <h4 class="description">{{item.itemDescription}}</h4>
+            <label>SecretDescription</label>
+            <h4 class="description">{{item.secretItemDescription}}</h4>
+          </div>
+        </div>
+        <button class="AddButton" (click)="WorkWithNewItem(sec.id)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="workingItem">
+    <mat-form-field class="itemName">
+      <mat-label>ItemName</mat-label>
+      <input type="text" matInput [(ngModel)]="tempItem.name">
+    </mat-form-field>
+    <div class="category">
+        <mat-form-field>
+          <mat-label>Item</mat-label>
+          <select matNativeControl required #categorySelect [(ngModel)]="tempItem.itemCategoryId">
+              <option *ngFor="let categ of itemService.itemCategories" [ngValue]="categ.id">{{categ.name}}</option>
+          </select>
+      </mat-form-field>
+      </div>
+    <div class="generalInfo">
+      <label>MaxDurability</label><input type="text" [(ngModel)]="tempItem.maxDurability">
+      <label>Price</label><input type="text" [(ngModel)]="tempItem.price">
+      <label>Weight</label><input type="text" [(ngModel)]="tempItem.weight">
+    </div>
+    <label for="description">Description</label>
+    <textarea type="text" 
+    name="description" 
+    [(ngModel)]="tempItem.itemDescription"
+    class="description"></textarea>
+    <label for="itemDescription">SecretDescription</label>
+    <textarea 
+    type="text" 
+    name="itemDescription" 
+    [(ngModel)]="tempItem.secretItemDescription"
+    class="description"></textarea>
+    <div class="controlBlock">
+      <button *ngIf="tempItem.id == 0" (click)="AddItem()">Add</button>
+      <button *ngIf="tempItem.id != 0" (click)="UpdateItem()">Save</button>
+      <button (click)="Cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

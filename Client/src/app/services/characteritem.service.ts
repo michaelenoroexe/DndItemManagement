@@ -4,53 +4,38 @@ import { ItemCategory } from "../model/itemCategory";
 import { environment } from "src/environment";
 import { CharacterItem } from "../model/characterItem";
 import * as signalR from "@microsoft/signalr";
+import { CharacterItemHubService } from "./characterItemHub.service";
 
 @Injectable({
     providedIn: "root"
 })
 export class CharacterItemService {
-    private wached: boolean = false;
-    private itemHub: signalR.HubConnection;
     private characterItems:{[chId:number]:CharacterItem[]} = {};
 
-    private addchEvent:((chItem:CharacterItem) => void)[] = []
     public ListenAddingChEvent(call:(chItem:CharacterItem) => void) {
-        this.addchEvent.push(call);
+        this.hub.addchEvent.push(call);
     }
-    private changechEvent:((chItem:CharacterItem) => void)[] = []
-    public ListenChangingChEvent(call:(chItem:CharacterItem) => void) {
-        this.changechEvent.push(call);
+    private ListenChangingChEvent(call:(chItem:CharacterItem) => void) {
+        this.hub.changechEvent.push(call);
     }
-    private deletechEvent:((chItemId:number) => void)[] = []
-    public ListenDeleteChEvent(call:(chItemId:number) => void) {
-        this.deletechEvent.push(call);
+    public ListenDeleteChEvent(call:(chItem:{characterId:number, itemId:number}) => void) {
+        this.hub.deletechEvent.push(call);
     }
 
-    constructor(private http:HttpClient) {
-        const token = localStorage.getItem("Token")!;
-        this.itemHub = new signalR.HubConnectionBuilder()
-                            .withUrl(environment.apiURL + 'hubs/ItemHub', 
-                            {accessTokenFactory: () => token})
-                            .build();
-        this.ConfigureHub();
+    constructor(private http:HttpClient, private hub: CharacterItemHubService) { 
+        this.ListenAddingChEvent((chItem) => {this.characterItems[chItem.characterId].push(chItem)});
+        this.ListenChangingChEvent((chItem) => {this.characterItems[chItem.characterId].push(chItem)});
+        this.ListenAddingChEvent((chItem) => {this.characterItems[chItem.characterId].push(chItem)});
     }
-    public StartWatchRoomList() {
-        if (!this.wached) {
-            this.itemHub.start();
-            this.wached = true
-        }
-    }
-    public StopWatchRoomList() {
-        if (this.wached) {
-            this.itemHub.stop();
-            this.wached = false;
-        }
-    }
+    public StartWatch() { this.hub.StartWatch(); }
+    public StopWatch() { this.hub.StopWatch(); }
+
     public GetCharacterItems(roomId:number, characterId:number) {
-        const chItems = this.characterItems[characterId]
+        let chItems = this.characterItems[characterId]
         if (chItems != undefined) return chItems
         const chItemsRequest:CharacterItem[] = []
         this.characterItems[characterId] = chItemsRequest;
+        chItems = chItemsRequest;
         this.http.get<CharacterItem[]>(`${environment.apiURL}rooms/${roomId}/character/${characterId}/chItems`)
         .subscribe({
             next(value:CharacterItem[]) {
@@ -59,16 +44,13 @@ export class CharacterItemService {
         })
         return chItems;
     }
-
-    private ConfigureHub() {
-        this.itemHub.on("AddedCharacterItemInfo", (chitem:CharacterItem) => {
-            this.addchEvent.forEach(ev => ev(chitem));
-        });
-        this.itemHub.on("ChangeCharacterItemInfo", (chitem:CharacterItem) => {  
-            this.changechEvent.forEach(e => e(chitem))
-        });
-        this.itemHub.on("DeleteCharacterItemInfo", (chitemId:number) => {
-            this.deletechEvent.forEach(e => e(chitemId))
-        });
+    public AddChItem(chItem:CharacterItem) {
+        this.hub.AddCharacterItem(chItem);
+    }
+    public ChangeChItem(chItem:CharacterItem) {
+        this.hub.ChangeCharacterItem(chItem);
+    }
+    public DeleteChItem(chItem:CharacterItem) {
+        this.hub.DeleteCharacterItem(chItem);
     }
 }

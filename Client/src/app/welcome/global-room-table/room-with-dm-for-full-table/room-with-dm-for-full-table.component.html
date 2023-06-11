@@ -1,5 +1,5 @@
 <div class="roomWithDm">
     <div class="roomName">{{room.name}}</div>
     <div class="roomName">{{room.dmName}}</div>
-    <button>join</button>
+    <button [routerLink]="['join', {roomId:this.room.id}]">join</button>
 </div>

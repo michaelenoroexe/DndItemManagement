@@ -47,7 +47,7 @@ namespace API.Controllers
             var token = service.AuthenticationService
                 .CreateToken(dMForAuth.Login, (character is null)? null : Convert.ToInt32(character));
 
-            return Ok(new { token = $"Bearer {token}" });
+            return Ok(new { token = $"{token}" });
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteDm(int id) 

@@ -58,7 +58,14 @@ internal sealed class RoomService : IRoomService
         repository.Room.DeleteRoom(roomDb);
         await repository.SaveAsync();
     }
+    public async Task<RoomDto> GetRoomAsync(int roomId, bool trackChanges)
+    {
+        var room = await repository.Room.GetRoomAsync(roomId, false);
 
+        var roomToReturn = mapper.Map<RoomDto>(room);
+
+        return roomToReturn;
+    }
     public async Task<IEnumerable<RoomWithDMDto>> GetAllRooms(bool trackChanges)
     {
         var dbRooms = await repository.Room.GetAllRoomsWithDmsAsync(trackChanges);

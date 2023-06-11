@@ -1,0 +1,16 @@
+<div class="joinPanelContainer">
+  <div class="joinPanel">
+    <h1>{{room.name}}</h1>
+    <div class="characters">
+      <button 
+      *ngFor="let character of characters"
+      (click)="SelectCharacter(character)"
+      [class.selected]="character.id == selectedCharacter?.id">
+        {{character.name}}
+      </button>
+    </div>
+    <label>Room Password</label>
+    <input type="text" [(ngModel)]="password">
+    <button class="signInButton" (click)="SignIn()">Sign In</button>
+  </div>
+</div>

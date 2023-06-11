@@ -71,7 +71,7 @@ internal sealed class AuthenticationService : IAuthenticationService
         if (room is null) return false;
 
         var character = await repositoryManager.Character.GetCharacterAsync(roomInfo.CharacterId!.Value, false);
-        if (character is null || character.RoomId.Equals(room.Id)) return false;
+        if (character is null || !character.RoomId.Equals(room.Id)) return false;
 
         return hasher.VerifyPassword(room.Password, roomInfo.Password!);
     }

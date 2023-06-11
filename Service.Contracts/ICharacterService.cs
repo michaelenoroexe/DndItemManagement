@@ -4,6 +4,7 @@ namespace Service.Contracts;
 
 public interface ICharacterService
 {
+    Task<CharacterDto> GetCharacterAsync(int id, bool trackChanges);
     Task<IEnumerable<CharacterDto>> GetRoomCharacters(int roomId, bool trackChanges);
     Task<CharacterDto> CreateRoomCharacterAsync(int roomId,
         CharacterForCreationDto characterForCreation, bool trackChanges);

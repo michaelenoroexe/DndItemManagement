@@ -1,11 +1,67 @@
-<div class="playItemHide" *ngIf="!full">
+<div class="playItemHide" *ngIf="!full" (click)="Expand()">
     <h4>{{itemInfo.name}}</h4>
     <div class="durability">
-        <input type="text" [(ngModel)]="item.currentDurability" name="currentDurability">
+        <input type="text" 
+        [(ngModel)]="item.currentDurability" 
+        name="currentDurability" 
+        (click)="PreventExpand($event)" 
+        (change)="ChangeCharacterInfo()">
         <label for="currentDurability">/{{itemInfo.maxDurability}}</label>
     </div>
-    <input type="text" [(ngModel)]="item.number" name="owned">
+    <input type="number" 
+    [(ngModel)]="item.itemNumber" 
+    name="owned" 
+    (click)="PreventExpand($event)"
+    (change)="ChangeCharacterInfo()">
+    <fa-icon [icon]="down"></fa-icon>
 </div>
-<div class="playItemFull" *ngIf="full">
-
+<div class="playItemFull" *ngIf="full" (click)="full = false || changed">
+    <input class="itemName" [(ngModel)]="changingItemInfo.name"  (change)="changed = true" (click)="PreventExpand($event)">
+    <div class="generalInfo">
+        <div class="owned">
+            <label>Owned:</label><input type="number" 
+            [(ngModel)]="changingItem.itemNumber" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)">
+        </div>
+        <div class="durability">
+            <label>Durability:</label><input type="text" 
+            [(ngModel)]="changingItem.currentDurability" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)">
+            <label>From:</label><input type="text" 
+            [(ngModel)]="changingItemInfo.maxDurability" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)">
+        </div>
+        <div class="price">
+            <label>Price:</label><input type="text" 
+            [(ngModel)]="changingItemInfo.price" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)">
+        </div>
+        <div class="weight">
+            <label>Weight:</label><input type="text" 
+            [(ngModel)]="changingItemInfo.weight" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)">
+        </div>
+        <div class="description">
+            <label>Description:</label><textarea 
+            [(ngModel)]="changingItemInfo.itemDescription" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)"></textarea>
+        </div>
+        <div class="description" *ngIf="dm">
+            <label>Secret description:</label><textarea 
+            [(ngModel)]="changingItemInfo.secretItemDescription" 
+            (change)="changed = true"
+            (click)="PreventExpand($event)"></textarea>
+        </div>
+    </div>
+    <div class="controll" *ngIf="changed">
+        <button (click)="ChangeFullInfo()">Save</button>
+        <button (click)="full = false; this.changed = false;">Cancel</button>
+    </div>
+    <fa-icon [icon]="down"></fa-icon>
 </div>

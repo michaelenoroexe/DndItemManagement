@@ -20,6 +20,6 @@
         <button class="addNewButton" *ngIf="!addingCharacter" 
         (click)="AddNewCharacter()">+</button>
     </div>
-    <button class="startButton">Start</button>
+    <button class="startButton" [routerLink]="['/dm/play', {roomId:room.id}]">Start</button>
 </div>
 

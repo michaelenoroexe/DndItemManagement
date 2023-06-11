@@ -1,0 +1,99 @@
+.managementBlock {
+  padding: 30px;
+  height: calc(100% - 60px);
+  display: flex;
+  flex-direction: row;
+  gap: 50px;
+  .allItemsBlock {
+    width: 300px;
+    height: 100%;
+    background-color: beige;
+    border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h1 {
+      margin-top: 10px;
+      text-align: center;
+      width: 100%;
+      border-bottom: 2px gray solid;
+    }
+    .sections {
+      overflow-y: scroll;
+      width: 100%;
+      .section {
+        width: 90%;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .items {
+          width: 100%;
+          .controll {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            height: 20px;
+            h3 {
+              margin-left: 20px;
+            }
+            button {
+              margin-left: 10px;
+            }
+          }
+          h3 {
+            text-align: center;
+          }
+        }
+      }
+    }
+    .generalInfo {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: auto auto auto auto auto;
+      .description {
+        height: 20px;
+        overflow-x: hidden;
+        overflow-y: hidden;
+      }
+    }
+  }
+  .workingItem {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    width: 260px;
+    height: calc(100% - 40px);
+    background-color: beige;
+    border: 2px black solid;
+    align-items: center;
+    gap: 15px;
+    .itemName {
+      width: 50%;
+      input {
+        height: 50px;
+      }
+    }
+    label {
+      text-transform: capitalize;
+      align-self: flex-start;
+    }
+    .generalInfo {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      grid-template-rows: auto auto auto;
+    }
+    .description {
+      width: 100%;
+      height: 200px;
+      
+    }
+    .controlBlock {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+    }
+  }
+}

@@ -8,4 +8,6 @@ public record ItemForHubUpdateDto : ItemForUpdateDto
     public int? Id { get; init; }
     [Required(ErrorMessage = "Room id is a required field.")]
     public int? RoomId { get; init; }
+    [Required(ErrorMessage = "Item category is a required field.")]
+    public int? ItemCategoryId { get; init; }
 }

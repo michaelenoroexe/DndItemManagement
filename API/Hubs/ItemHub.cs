@@ -10,7 +10,7 @@ using SignalRSwaggerGen.Attributes;
 using System.Security.Claims;
 
 namespace API.Hubs;
-
+[Authorize]
 [SignalRHub]
 public class ItemHub : Hub
 {
@@ -83,24 +83,36 @@ public class ItemHub : Hub
 
         await ActivateRoom(dmLogin, roomId);
     }
-    public async Task JoinRoom(RoomForAuthenticationDto room)
+    public async Task JoinRoom(RoomForAuthenticationDto? room)
     {
-        var valResult = await services.AuthenticationService.ValidateRoom(room);
-        if (valResult == false) throw new UnauthorizedAccessException();
-        var dmLogin = Context.User?.FindFirst(ClaimTypes.Name)?.Value;
-        string tocken = services.AuthenticationService.CreateToken(dmLogin, room.CharacterId);
-        await Clients.Caller.SendAsync("GetTocken", tocken);
-        await Groups.AddToGroupAsync(Context.ConnectionId, room.CharacterId!.Value.ToString());
-        await Groups.AddToGroupAsync(Context.ConnectionId, room.Id!.Value.ToString());
+        var chId = Context.User?.FindFirst(ClaimTypes.Actor)?.Value;
+        if (room is null && chId is null) throw new ArgumentNullException();
+        if (room is not null)
+        {
+            var valResult = await services.AuthenticationService.ValidateRoom(room);
+            if (valResult == false) throw new UnauthorizedAccessException();
+            var dmLogin = Context.User?.FindFirst(ClaimTypes.Name)?.Value;
+            string token = services.AuthenticationService.CreateToken(dmLogin, room.CharacterId);
+            await Clients.Caller.SendAsync("GetToken", token);
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.CharacterId!.Value.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, room.Id!.Value.ToString());
+            return;
+        }
+        if (chId is not null)
+        {
+            var ch = await services.CharacterService.GetCharacterAsync(Convert.ToInt32(chId), false);
+            await Groups.AddToGroupAsync(Context.ConnectionId, ch.Id.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, ch.RoomId.ToString());
+            return;
+        }
     }
     #region Character item
     public async Task AddCharacterItem(CIForHubCreationDto characterItem)
     {
         var itemDto = await services.CharacterItemsService.CreateCharacterItemAsync
             (characterItem.CharacterId, characterItem.ItemId, characterItem, true);
-
         await Clients.Group(characterItem.CharacterId.ToString())
-            .SendAsync("AddedCharacterItemInfo", itemDto);
+        .SendAsync("AddedCharacterItemInfo", itemDto);      
     }
     public async Task UpdateCharacterItem(CIForHubUpdateDto characterItem)
     {
@@ -116,7 +128,7 @@ public class ItemHub : Hub
         await services.CharacterItemsService.DeleteCharacterItemAsync(characterId, itemId, true);
 
         await Clients.Group(characterId.ToString())
-            .SendAsync("DeleteCharacterItemInfo", new {characterId, itemId });
+            .SendAsync("DeleteCharacterItemInfo", new { characterId, itemId });
     }
     #endregion
     #region Item
@@ -130,7 +142,6 @@ public class ItemHub : Hub
     public async Task UpdateItemInfo(ItemForHubUpdateDto item)
     {
         await services.ItemService.UpdateItemAsync(item.RoomId!.Value, item.Id!.Value, item, false, true);
-
         var itemDto = mapper.Map<ItemDto>(item);
         await Clients.Group(item.RoomId!.Value.ToString())
             .SendAsync("ChangeItem", itemDto);

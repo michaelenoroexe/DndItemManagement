@@ -1,1 +1,9 @@
-<p>dm-play works!</p>
+<div class="dmPlayPanel">
+  <h1>{{room.name}}</h1>
+  <div class="roomCharacterContainer">
+    <div class="roomCharacter" *ngFor="let character of characters">
+      <app-play [roomId]="roomId" [character]="character" [full]="false">
+      </app-play>
+    </div>
+  </div>
+</div>

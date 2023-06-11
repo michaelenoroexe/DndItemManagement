@@ -10,7 +10,7 @@
     }
     .categoriesBlock {
         overflow-y: scroll;
-        height: calc(100% - 45px);
+        height: calc(100% - 50px);
         row-gap: 20px;
         display: flex;
         flex-direction: row;
@@ -20,5 +20,10 @@
         app-category {
             height: fit-content;
         }
+    }
+}
+.slim {
+    .categoriesBlock {
+        overflow-y: hidden;
     }
 }
