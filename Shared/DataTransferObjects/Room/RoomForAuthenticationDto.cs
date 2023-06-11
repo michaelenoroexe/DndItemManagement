@@ -8,4 +8,6 @@ public record RoomForAuthenticationDto
     public int? Id { get; init; }
     [Required(ErrorMessage = "Password is required")]
     public string? Password { get; init; }
+    [Required(ErrorMessage = "Character id required")]
+    public int? CharacterId { get; init; }
 }

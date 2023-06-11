@@ -12,7 +12,7 @@ internal class RoomConfiguration : IEntityTypeConfiguration<Room>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id).HasColumnName("RoomID");
         builder.Property(x => x.Name).HasColumnName("RoomName").HasMaxLength(20).IsRequired(true);
-        builder.Property(x => x.Password).HasColumnName("RoomPassword").HasMaxLength(25).IsRequired(true);
+        builder.Property(x => x.Password).HasColumnName("RoomPassword").HasMaxLength(65).IsRequired(true);
         builder.Property(x => x.Started).HasColumnName("Started").IsRequired(true).HasDefaultValue(false);
         builder.HasCheckConstraint("RoomPassword", " Len(DmPassword) > 4");
 

@@ -21,7 +21,7 @@ internal sealed class CharacterItemsService : ICharacterItemsService
     }
     private async Task CheckIfItemExists(int itemId, bool trackChanges)
     {
-        var item = await repository.Character.GetCharacterAsync(itemId, trackChanges);
+        var item = await repository.Item.GetItemAsync(itemId, trackChanges);
         if (item is null) throw new ItemNotFoundException(itemId);
     }
     private async Task<CharacterItem> GetCharacterItemAndCheckIfItExists(int characterId, int itemId, bool trackChanges)
@@ -69,7 +69,7 @@ internal sealed class CharacterItemsService : ICharacterItemsService
     {
         await CheckIfCharacterExists(characterId, trackChanges);
 
-        var chItemsDb = repository.CharacterItem.GetCharacterItemsAsync(characterId, trackChanges);
+        var chItemsDb = await repository.CharacterItem.GetCharacterItemsAsync(characterId, trackChanges);
 
         var CharacterItemToReturn = mapper.Map<IEnumerable<CharacterItemDto>>(chItemsDb);
 

@@ -1,0 +1,14 @@
+.section {
+    height: 100%;
+    background-image: url(../assets/Bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+app-gen-control-panel {
+    position: absolute;
+    right: 0px;
+}
+app-item-table {
+    display: block;
+    height: 100%;
+}

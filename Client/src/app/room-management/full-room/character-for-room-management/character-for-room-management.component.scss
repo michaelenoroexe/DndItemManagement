@@ -1,0 +1,28 @@
+.characterSegment {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    input {
+        width: 50%;
+        text-align: center;
+        background-color: transparent;
+        border: 2px transparent solid;
+    }
+    input:focus {
+        border: 2px black solid;
+    }
+    .changeButton {
+        border: 2px rgb(22, 22, 22) solid;
+    }
+    .changeButton:hover {
+        background-color: rgb(51, 51, 51);
+        color: aliceblue;
+    }
+    .deleteButton {
+        border: 2px rgb(182, 57, 57) solid;
+    }
+    .deleteButton:hover {
+        background-color: rgb(155, 63, 63);
+    }
+}

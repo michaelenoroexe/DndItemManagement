@@ -35,7 +35,10 @@ builder.Services.AddControllers(config =>
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSignalRSwaggerGen();
+});
 
 var app = builder.Build();
 
@@ -58,7 +61,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapHub<ItemHub>("api/itemHub");
+app.MapHub<ItemHub>("api/hubs/itemHub");
+app.MapHub<RoomHub>("api/hubs/roomHub");
 
 app.Run();
 

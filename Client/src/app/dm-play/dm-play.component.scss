@@ -1,0 +1,18 @@
+.dmPlayPanel {
+  height: calc(100%);
+  h1 {
+    padding-top: 30px;  
+    color: azure;
+    text-align: center;
+  }
+  .roomCharacterContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    height:calc(100vh - 80px);
+    .roomCharacter {
+      width: 355px;
+    }
+  }
+}

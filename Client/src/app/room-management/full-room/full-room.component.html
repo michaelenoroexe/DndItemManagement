@@ -1,0 +1,25 @@
+<div class="fullRoom">
+    <div class="roomNameBlock">
+        <input type="text" 
+            #roomName 
+            [(ngModel)] ="room.name" 
+            [readOnly]="!changingRoomName"
+            (blur)="ApplyRoomNameChange()"
+        >
+        <button class="changeButton" (click)="UpdateRoomName()"><fa-icon [icon]="penIcon"></fa-icon></button>
+        <button class="deleteButton"><fa-icon [icon]="delIcon"></fa-icon></button>
+    </div>
+    <div class="characterBlock">
+        <app-character-for-room-management
+        class="character"
+        *ngFor="let character of characters"
+        [character]="character"
+        [roomId]="room.id"
+        (characterUpdate)="UpdateState($event)">
+        </app-character-for-room-management>
+        <button class="addNewButton" *ngIf="!addingCharacter" 
+        (click)="AddNewCharacter()">+</button>
+    </div>
+    <button class="startButton" [routerLink]="['/dm/play', {roomId:room.id}]">Start</button>
+</div>
+

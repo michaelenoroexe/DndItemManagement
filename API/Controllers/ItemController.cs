@@ -21,40 +21,46 @@ namespace API.Controllers
 
             return Ok(items);
         }
+        [HttpGet("items")]
+        public async Task<IActionResult> GetAllItems()
+        {
+            var items = await service.ItemService.GetAllItemsAsync(false);
 
+            return Ok(items);
+        }
         [HttpGet("dm/{dmId}/items")]
-        public async Task<IActionResult> GetAllItemsForDm(int dmId)
+        public async Task<IActionResult> GetAllItemsForDM(int dmId)
         {
             var items = await service.ItemService.GetAllItemsForDmAsync(dmId, false);
 
             return Ok(items);
         }
 
-        [HttpPost("dm/{dmId}/items")]
-        public async Task<IActionResult> PostItemForDm(int dmId,
+        [HttpPost("dm/{dmId}/rooms/{roomId}/items")]
+        public async Task<IActionResult> PostItemForRoom(int dmId, int roomId,
             [FromBody] ItemForCreationDto itemForCreation)
         {
             var item = await service.ItemService
-                .CreateItemAsync(dmId, itemForCreation, true);
+                .CreateItemAsync(roomId, itemForCreation, true);
 
-            return Created($"dm/{dmId}/items/{item.Id}", item);
+            return Created($"dm/{dmId}/rooms/{roomId}/items/{item.Id}", item);
         }
 
-        [HttpDelete("dm/{dmId}/items/{id}")]
-        public async Task<IActionResult> DeleteItemForDm(int dmId, int id)
+        [HttpDelete("dm/{dmId}/rooms/{roomId}/items/{id}")]
+        public async Task<IActionResult> DeleteItemForRoom(int dmId, int roomId, int id)
         {
             await service.ItemService
-                .DeleteItemAsync(dmId, id, true);
+                .DeleteItemAsync(roomId, id, true);
 
             return NoContent();
         }
 
         [HttpPut]
-        [Route("dm/{dmId}/items/{id}")]
+        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> UpdateItemForDm
-            (int dmId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
+            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
         {
-            await service.ItemService.UpdateItemAsync(dmId, id, itemForUpdate, false, true);
+            await service.ItemService.UpdateItemAsync(roomId, id, itemForUpdate, false, true);
 
             return NoContent();
         }
@@ -62,23 +68,23 @@ namespace API.Controllers
         [HttpPut]
         [Route("rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> UpdateItemForRoom
-            (int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
+            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
         {
             var room = await service.RoomService.GetFullRoomAsync(id, false);
 
-            await service.ItemService.UpdateItemAsync(room.DmId, id, itemForUpdate, false, true);
+            await service.ItemService.UpdateItemAsync(room.Id, id, itemForUpdate, false, true);
 
             return NoContent();
         }
 
-        [HttpPatch("dm/{dmId}/items/{id}")]
-        public async Task<IActionResult> PatchItemForDm
-            (int dmId, int id, [FromBody] JsonPatchDocument<ItemForUpdateDto> patchDoc)
+        [HttpPatch("dm/{dmId}/rooms/{roomId}/items/{id}")]
+        public async Task<IActionResult> PatchItemForRoom
+            (int dmId, int roomId, int id, [FromBody] JsonPatchDocument<ItemForUpdateDto> patchDoc)
         {
             if (patchDoc is null)
                 return BadRequest("pathDoc object sent from client is null");
 
-            var result = await service.ItemService.GetItemForPatchAsync(dmId, id, false, true);
+            var result = await service.ItemService.GetItemForPatchAsync(roomId, id, false, true);
 
             patchDoc.ApplyTo(result.itemToPatch, ModelState);
 

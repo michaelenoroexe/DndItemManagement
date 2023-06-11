@@ -77,4 +77,12 @@ internal sealed class CharacterService : ICharacterService
         mapper.Map(characterForUpdate, characterDb);
         await repository.SaveAsync();
     }
+
+    public async Task<CharacterDto> GetCharacterAsync(int id, bool trackChanges)
+    {
+        var character = await GetCharacterAndCheckIfItExists(id, false);
+
+        var characterToReturn = mapper.Map<CharacterDto>(character);
+        return characterToReturn;
+    }
 }

@@ -1,3 +1,3 @@
 ﻿namespace Shared.DataTransferObjects.Room;
 
-public record RoomForCreationDto : RoomForManipulationDto;
+public record RoomForCreationDto : RoomWithPassDto;

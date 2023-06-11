@@ -24,11 +24,11 @@ internal sealed class AuthenticationService : IAuthenticationService
         return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
     }
 
-    private static List<Claim> GetClaims(string? dmLogin, int? roomId)
+    private static List<Claim> GetClaims(string? dmLogin, int? characterId)
     {
         var claims = new List<Claim>();
         if (dmLogin is not null) claims.Add(new Claim(ClaimTypes.Name, dmLogin));
-        if (roomId.HasValue) claims.Add(new Claim(ClaimTypes.Actor, roomId.Value.ToString()));
+        if (characterId.HasValue) claims.Add(new Claim(ClaimTypes.Actor, characterId.Value.ToString()));
         return claims;
     }
 
@@ -68,17 +68,19 @@ internal sealed class AuthenticationService : IAuthenticationService
     public async Task<bool> ValidateRoom(RoomForAuthenticationDto roomInfo)
     {
         var room = await repositoryManager.Room.GetRoomAsync(roomInfo.Id!.Value, false);
+        if (room is null) return false;
 
-        var result = (room is not null && hasher.VerifyPassword(room.Password, roomInfo.Password!));
+        var character = await repositoryManager.Character.GetCharacterAsync(roomInfo.CharacterId!.Value, false);
+        if (character is null || !character.RoomId.Equals(room.Id)) return false;
 
-        return result;
+        return hasher.VerifyPassword(room.Password, roomInfo.Password!);
     }
 
-    public string CreateToken(string? dmLogin, int? roomId)
+    public string CreateToken(string? dmLogin, int? characterId)
     {
-        if (dmLogin is null && roomId is null) throw new ArgumentNullException("Both arguments can't be null");
+        if (dmLogin is null && characterId is null) throw new ArgumentNullException("Both arguments can't be null");
         var signingCredentials = GetSigningCredentials();
-        var claims = GetClaims(dmLogin, roomId);
+        var claims = GetClaims(dmLogin, characterId);
         var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenOptions);

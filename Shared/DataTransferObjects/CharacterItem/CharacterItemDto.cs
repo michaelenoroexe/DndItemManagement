@@ -1,3 +1,3 @@
 ﻿namespace Shared.DataTransferObjects.CharacterItem;
 
-public record CharacterItemDto(int CaracterId, int ItemId, int Number, int CurrentDurability);
+public record CharacterItemDto(int CharacterId, int ItemId, int ItemNumber, int CurrentDurability);

@@ -1,0 +1,13 @@
+<div class="globalRoomTable">
+    <div class="search">
+        <input type="text" class="searchField" >
+        <button><fa-icon [icon]="castleIcon"></fa-icon></button>
+    </div>
+    <div class="roomList">
+        <app-room-with-dm-for-full-table class="room" 
+            *ngFor="let currentRoom of rooms"
+            [room] = currentRoom
+        ></app-room-with-dm-for-full-table>
+    </div>
+    <div class="navigation">------------------</div>
+</div>

@@ -3,6 +3,7 @@ using Entities.Models;
 using Shared.DataTransferObjects.Character;
 using Shared.DataTransferObjects.CharacterItem;
 using Shared.DataTransferObjects.DM;
+using Shared.DataTransferObjects.Item;
 using Shared.DataTransferObjects.ItemCategory;
 using Shared.DataTransferObjects.Room;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -18,6 +19,8 @@ public class MappingProfile : Profile
         CreateMap<DMForUpdateDto, DM>().ReverseMap();
 
         CreateMap<Room, RoomDto>();
+        CreateMap<Room, RoomWithDMDto>().ForCtorParam("DMName",
+            opt => opt.MapFrom(room => room.DM.Login));
         CreateMap<RoomForCreationDto, Room>();
         CreateMap<RoomForUpdateDto, Room>().ReverseMap();
 
@@ -40,5 +43,10 @@ public class MappingProfile : Profile
         CreateMap<CharacterItem, CharacterItemDto>();
         CreateMap<CharacterItemForCreationDto, CharacterItem>();
         CreateMap<CharacterItemForUpdateDto, CharacterItem>().ReverseMap();
+
+        CreateMap<Item, ItemDto>();
+        CreateMap<ItemForCreationDto, Item>();
+        CreateMap<ItemForHubUpdateDto, ItemDto>();
+        CreateMap<ItemForUpdateDto, Item>().ReverseMap();
     }
 }

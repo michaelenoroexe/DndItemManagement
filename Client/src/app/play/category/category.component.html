@@ -1,0 +1,34 @@
+<div class="categoryBlock">
+    <h3>{{category.name}}</h3>
+    <div class="headers">
+        <h4>Name</h4>
+        <h4>Durability</h4>
+        <h4>Number</h4>
+    </div>
+    <div class="itemList">
+        <app-play-item
+        *ngFor="let item of characterItems"
+        [item]="item"
+        [dm]="dm"
+        [roomId]="roomId"
+        ></app-play-item>
+        <div class="newCharacterItem" *ngIf="addNewCharacterItem">
+            <mat-form-field>
+                <mat-label>Item</mat-label>
+                <select matNativeControl required #itemSelect (change)='ItemChangeForChItem(itemSelect.value)'>
+                    <option value="" [defaultSelected]="true"></option>
+                    <option *ngFor="let item of itemsForCategory" [value]="item.id">{{item.name}}</option>
+                    <option value="New" (click)="CreateNewItem()">+</option>
+                </select>
+            </mat-form-field>
+            <input type="number" name="number" class="number" [(ngModel)]="newCharacterItem.itemNumber">
+            <div class="control">
+                <button (click)="AddCharacterItem()">Accept</button>
+                <button (click)="CancelCharacterItem()">Cancel</button>
+            </div>
+        </div>
+        <button class="addButton" 
+        *ngIf="!addNewCharacterItem" 
+        (click)="CreateNewCharacterItem()">+</button>
+    </div>
+</div>
