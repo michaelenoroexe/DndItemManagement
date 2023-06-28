@@ -71,24 +71,16 @@ namespace Service.Contracts
         public async Task<ItemDto> CreateItemAsync(int roomId,
             ItemForCreationDto itemForCreation, bool trackChanges)
         {
-            try
-            {
+            await CheckIfRoomExists(roomId);
 
-                await CheckIfRoomExists(roomId);
+            var itemEntity = mapper.Map<Item>(itemForCreation);
 
-                var itemEntity = mapper.Map<Item>(itemForCreation);
+            repository.Item.CreateItem(itemEntity);
+            await repository.SaveAsync();
 
-                repository.Item.CreateItem(itemEntity);
-                await repository.SaveAsync();
+            var itemToReturn = mapper.Map<ItemDto>(itemEntity);
 
-                var itemToReturn = mapper.Map<ItemDto>(itemEntity);
-
-                return itemToReturn;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.ToString());
-            }
+            return itemToReturn;
         }
 
         public async Task DeleteItemAsync(int roomId, int id, bool trackChanges)
