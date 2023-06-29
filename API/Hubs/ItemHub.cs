@@ -10,7 +10,6 @@ using SignalRSwaggerGen.Attributes;
 using System.Security.Claims;
 
 namespace API.Hubs;
-[Authorize]
 [SignalRHub]
 public class ItemHub : Hub
 {
