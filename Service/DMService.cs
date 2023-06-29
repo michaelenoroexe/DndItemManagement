@@ -54,15 +54,6 @@ internal sealed class DMService : IDMService
         return dm;
     }
 
-    public async Task<(DMForUpdateDto dmToPatch, DM dmEntity)> GetDMForPatchAsync(int id, bool dmTrackChanges)
-    {
-        var dmDb = await GetDMAndCheckIfItExists(id, dmTrackChanges);
-
-        var dmToPath = mapper.Map<DMForUpdateDto>(dmDb);
-
-        return (dmToPath, dmDb);
-    }
-
     public async Task<DMDto> RegisterDMAsync(DMForRegistrationDto dm)
     {
         var dmEntity = mapper.Map<DM>(dm);
@@ -76,17 +67,11 @@ internal sealed class DMService : IDMService
         return dmToReturn;
     }
 
-    public async Task SaveChangesForPatchAsync(DMForUpdateDto dmToPatch, DM dmEntity)
-    {
-        mapper.Map(dmToPatch, dmEntity);
-        await repository.SaveAsync();
-    }
-
     public async Task UpdateDMAsync(int id, DMForUpdateDto dmForUpdate, bool trackChanges)
     {
         var dmDb = await GetDMAndCheckIfItExists(id, trackChanges);
-
-        dmDb.Password = hasher.HashPassword(dmDb.Password);
+        if (dmDb.Password is not null)
+            dmDb.Password = hasher.HashPassword(dmDb.Password);
 
         mapper.Map(dmForUpdate, dmDb);
         await repository.SaveAsync();

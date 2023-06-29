@@ -74,32 +74,12 @@ namespace API.Controllers
             await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
             return NoContent();
         }
-        [Authorize]
-        [HttpPut("dm/{dmId}/rooms/{id:int}/pass")]
-        [ServiceFilter(typeof(ValidationFilterAttribute))]
-        public async Task<IActionResult> UpdateFullRoom(int dmId, int id, [FromBody] RoomWithPassDto roomForUpdate)
-        {
-            await service.RoomService.UpdateRoomAsync(dmId, id, roomForUpdate, false, true);
-
-            return NoContent();
-        }
         [HttpPatch("dm/{dmId}/rooms/{id:int}")]
         public async Task<IActionResult> PartiallyUpdateRoom(int dmId, int id,
-            [FromBody] RoomWithPassDto patchDoc)
+            [FromBody] RoomForUpdateDto roomForUpdate)
         {
-            if (patchDoc is null)
-                return BadRequest("patchDoc object sent from client is null.");
-
-            var result = await service.RoomService.GetRoomForPatchAsync(dmId, id, false, true);
-
-            //patchDoc.ApplyTo(result.roomToPatch, ModelState);
-
-            //TryValidateModel(result.roomToPatch);
-
-            if (ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
-            await service.RoomService.SaveChangesForPatchAsync(patchDoc, result.roomEntity);
+            await service.RoomService.UpdateRoomAsync(dmId, id, roomForUpdate, false, true);
+            await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
 
             return NoContent();
         }

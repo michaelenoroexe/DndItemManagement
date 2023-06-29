@@ -2,5 +2,5 @@
 
 public record RoomForUpdateDto : RoomForManipulationDto
 {
-    public bool Started { get; init; } = false;
+    public bool? Started { get; init; }
 }

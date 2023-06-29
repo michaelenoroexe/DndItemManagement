@@ -66,22 +66,10 @@ namespace API.Controllers
         }
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> PartiallyUpdateDm(int id,
-            [FromBody] JsonPatchDocument<DMForUpdateDto> patchDoc) 
+            [FromBody] DMForUpdateDto dMForUpdate) 
         {
-            if (patchDoc is null)
-                return BadRequest("patchDoc object sent from client is null.");
-
-            var result = await service.DMService.GetDMForPatchAsync(id, true);
-
-            patchDoc.ApplyTo(result.dmToPatch, ModelState);
-
-            TryValidateModel(result.dmToPatch);
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
-            await service.DMService.SaveChangesForPatchAsync(result.dmToPatch, result.dmEntity);
-
+            await service.DMService.UpdateDMAsync(id, dMForUpdate, true);
+            
             return NoContent();
         }
         [HttpOptions]

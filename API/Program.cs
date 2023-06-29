@@ -29,10 +29,7 @@ builder.Services.ConfigureSqlContext();
 
 // Add services to the container.
 builder.Services.AddSignalR();
-builder.Services.AddControllers(config =>
-{
-    config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
-});
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -65,9 +62,3 @@ app.MapHub<ItemHub>("api/hubs/itemHub");
 app.MapHub<RoomHub>("api/hubs/roomHub");
 
 app.Run();
-
-NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
-new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
-.Services!.BuildServiceProvider()
-.GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
-.OfType<NewtonsoftJsonPatchInputFormatter>().First();

@@ -74,19 +74,6 @@ internal sealed class RoomService : IRoomService
 
         return roomsToReturn;
     }
-
-    public async Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> 
-        GetRoomForPatchAsync(int dmId, int id, bool dmTrackChanges, bool roomTrackChanges)
-    {
-        await CheckIfDmExists(dmId, dmTrackChanges);
-
-        var roomDb = await GetRoomAndCheckIfItExists(id, roomTrackChanges);
-
-        var roomToPatch = mapper.Map<RoomForUpdateDto>(roomDb);
-
-        return (roomToPatch, roomDb);
-    }
-
     public async Task<IEnumerable<RoomDto>> GetRoomsForDM(int dmId, bool trackChanges)
     {
         await CheckIfDmExists(dmId, trackChanges);
@@ -98,15 +85,9 @@ internal sealed class RoomService : IRoomService
         return roomsToReturn;
     }
 
-    public async Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity)
-    {
-        mapper.Map(roomToPatch, roomEntity);
-        await repository.SaveAsync();
-    }
-
-    public async Task UpdateRoomAsync<TUpdate>
-        (int dmId, int id, TUpdate roomForUpdate, 
-        bool dmTrackChanges, bool roomTrackChanges) where TUpdate : RoomForManipulationDto
+    public async Task<RoomDto> UpdateRoomAsync
+        (int dmId, int id, RoomForUpdateDto roomForUpdate, 
+        bool dmTrackChanges, bool roomTrackChanges)
     {
         await CheckIfDmExists(dmId, dmTrackChanges);
 
@@ -114,6 +95,8 @@ internal sealed class RoomService : IRoomService
 
         mapper.Map(roomForUpdate, roomDb);
         await repository.SaveAsync();
+
+        return mapper.Map<RoomDto>(roomDb);
     }
     public async Task<Room> GetFullRoomAsync(int id, bool trackChanges) =>
         await GetRoomAndCheckIfItExists(id, trackChanges);

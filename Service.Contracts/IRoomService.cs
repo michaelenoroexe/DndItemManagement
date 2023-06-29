@@ -12,9 +12,6 @@ public interface IRoomService
     Task<RoomDto> CreateRoomForDMAsync(int dmId,
         RoomForCreationDto roomForCreation, bool trackChanges);
     Task DeleteRoomAsync(int dmId, int id, bool trackChanges);
-    Task UpdateRoomAsync<TUpdate>(int dmId, int id,
-        TUpdate roomForUpdate, bool dmTrackChanges, bool roomTrackChanges) where TUpdate : RoomForManipulationDto;
-    Task<(RoomForUpdateDto roomToPatch, Room roomEntity)> GetRoomForPatchAsync(
-        int dmId, int id, bool dmTrackChanges, bool roomTrackChanges);
-    Task SaveChangesForPatchAsync(RoomForUpdateDto roomToPatch, Room roomEntity);
+    Task<RoomDto> UpdateRoomAsync(int dmId, int id,
+        RoomForUpdateDto roomForUpdate, bool dmTrackChanges, bool roomTrackChanges);
 }
