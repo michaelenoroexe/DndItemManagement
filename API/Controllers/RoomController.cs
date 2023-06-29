@@ -62,7 +62,7 @@ namespace API.Controllers
         public async Task<IActionResult> DeleteRoom(int dmId, int id)
         {
             await service.RoomService.DeleteRoomAsync(dmId, id, true);
-            await roomHub.Clients.All.SendAsync("DeleteRoom", new int[] { id });
+            await roomHub.Clients.All.SendAsync("DeletedRoom", new int[] { id });
             return NoContent();
         }
         [Authorize]
@@ -71,7 +71,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateRoom(int dmId, int id, [FromBody] RoomForUpdateDto roomForUpdate)
         {
             await service.RoomService.UpdateRoomAsync(dmId, id, roomForUpdate, false, true);
-            await roomHub.Clients.All.SendAsync("ChangeRoom", roomForUpdate);
+            await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
             return NoContent();
         }
         [Authorize]
@@ -85,21 +85,21 @@ namespace API.Controllers
         }
         [HttpPatch("dm/{dmId}/rooms/{id:int}")]
         public async Task<IActionResult> PartiallyUpdateRoom(int dmId, int id,
-            [FromBody] JsonPatchDocument<RoomForUpdateDto> patchDoc)
+            [FromBody] RoomWithPassDto patchDoc)
         {
             if (patchDoc is null)
                 return BadRequest("patchDoc object sent from client is null.");
 
             var result = await service.RoomService.GetRoomForPatchAsync(dmId, id, false, true);
 
-            patchDoc.ApplyTo(result.roomToPatch, ModelState);
+            //patchDoc.ApplyTo(result.roomToPatch, ModelState);
 
-            TryValidateModel(result.roomToPatch);
+            //TryValidateModel(result.roomToPatch);
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
 
-            await service.RoomService.SaveChangesForPatchAsync(result.roomToPatch, result.roomEntity);
+            await service.RoomService.SaveChangesForPatchAsync(patchDoc, result.roomEntity);
 
             return NoContent();
         }

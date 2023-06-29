@@ -85,22 +85,22 @@ export class CharacterItemHubService {
         this.itemHub.send("DeleteCharacterItem", chItem.characterId, chItem.itemId);
     }
     private ConfigureHub() {
-        this.itemHub.on("AddedCharacterItemInfo", (chitem: CharacterItem) => {
+        this.itemHub.on("AddedCharacterItem", (chitem: CharacterItem) => {
             this.addchEvent.forEach(e => e(chitem));
         });
-        this.itemHub.on("ChangeCharacterItemInfo", (chitem: CharacterItem) => {
+        this.itemHub.on("UpdatedCharacterItem", (chitem: CharacterItem) => {
             this.changechEvent.forEach(e => e(chitem))
         });
-        this.itemHub.on("DeleteCharacterItemInfo", (chItem:{characterId:number, itemId:number}) => {
+        this.itemHub.on("DeletedCharacterItem", (chItem:{characterId:number, itemId:number}) => {
             this.deletechEvent.forEach(e => e(chItem))
         });
-        this.itemHub.on("CreateItem", (item: Item) => {
+        this.itemHub.on("AddedItem", (item: Item) => {
             this.addItemEvent.forEach(e => e(item));
         });
-        this.itemHub.on("ChangeItem", (item: Item) => {
+        this.itemHub.on("UpdatedItem", (item: Item) => {
             this.changeItemEvent.forEach(e => e(item))
         });
-        this.itemHub.on("DeleteItem", (itemId: number) => {
+        this.itemHub.on("DeletedItem", (itemId: number) => {
             this.deleteItemEvent.forEach(e => e(itemId))
         });
         this.itemHub.on("GetToken", (token: string) => {

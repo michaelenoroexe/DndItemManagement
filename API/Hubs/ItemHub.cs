@@ -35,7 +35,7 @@ public class ItemHub : Hub
         await ChangeStateOfRoom(dm.Id, room, true);
 
         await ExecForEveryGroup(room.Id, (string conn, string group) => Groups.AddToGroupAsync(conn, group));
-        await Groups.AddToGroupAsync(Context.ConnectionId, roomId.ToString());
+        await Groups.AddToGroupAsync(Context.ConnectionId, "r" + roomId.ToString());
 
         var roomDto = mapper.Map<RoomDto>(room);
         await roomContext.Clients.All.SendAsync("ChangeRoom", roomDto);
@@ -66,7 +66,7 @@ public class ItemHub : Hub
     {
         var characters = await services.CharacterService.GetRoomCharacters(roomId, false);
 
-        return characters.Select(c => c.Id.ToString());
+        return characters.Select(c => "c" + c.Id.ToString());
     }
 
     public ItemHub(IServiceManager services, IMapper mapper, IHubContext<RoomHub> roomContext)
@@ -94,66 +94,18 @@ public class ItemHub : Hub
             var dmLogin = Context.User?.FindFirst(ClaimTypes.Name)?.Value;
             string token = services.AuthenticationService.CreateToken(dmLogin, room.CharacterId);
             await Clients.Caller.SendAsync("GetToken", token);
-            await Groups.AddToGroupAsync(Context.ConnectionId, room.CharacterId!.Value.ToString());
-            await Groups.AddToGroupAsync(Context.ConnectionId, room.Id!.Value.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, "c" + room.CharacterId!.Value.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, "r" + room.Id!.Value.ToString());
             return;
         }
         if (chId is not null)
         {
             var ch = await services.CharacterService.GetCharacterAsync(Convert.ToInt32(chId), false);
-            await Groups.AddToGroupAsync(Context.ConnectionId, ch.Id.ToString());
-            await Groups.AddToGroupAsync(Context.ConnectionId, ch.RoomId.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, "c" + ch.Id.ToString());
+            await Groups.AddToGroupAsync(Context.ConnectionId, "r" + ch.RoomId.ToString());
             return;
         }
     }
-    #region Character item
-    public async Task AddCharacterItem(CIForHubCreationDto characterItem)
-    {
-        var itemDto = await services.CharacterItemsService.CreateCharacterItemAsync
-            (characterItem.CharacterId, characterItem.ItemId, characterItem, true);
-        await Clients.Group(characterItem.CharacterId.ToString())
-        .SendAsync("AddedCharacterItemInfo", itemDto);      
-    }
-    public async Task UpdateCharacterItem(CIForHubUpdateDto characterItem)
-    {
-        await services.CharacterItemsService.UpdateCharacterItemAsync
-            (characterItem.CharacterId, characterItem.ItemId, characterItem, true);
-
-        var itemDto = mapper.Map<CharacterItemDto>(characterItem);
-        await Clients.Group(characterItem.CharacterId.ToString())
-            .SendAsync("ChangeCharacterItemInfo", itemDto);
-    }
-    public async Task DeleteCharacterItem(int characterId, int itemId)
-    {
-        await services.CharacterItemsService.DeleteCharacterItemAsync(characterId, itemId, true);
-
-        await Clients.Group(characterId.ToString())
-            .SendAsync("DeleteCharacterItemInfo", new { characterId, itemId });
-    }
-    #endregion
-    #region Item
-    public async Task CreateItemInfo(ItemForHubCreationDto item)
-    {
-        var itemDto = await services.ItemService.CreateItemAsync(item.RoomId!.Value, item, true);
-
-        await Clients.Group(item.RoomId.Value.ToString())
-            .SendAsync("CreateItem", itemDto);
-    }
-    public async Task UpdateItemInfo(ItemForHubUpdateDto item)
-    {
-        await services.ItemService.UpdateItemAsync(item.RoomId!.Value, item.Id!.Value, item, false, true);
-        var itemDto = mapper.Map<ItemDto>(item);
-        await Clients.Group(item.RoomId!.Value.ToString())
-            .SendAsync("ChangeItem", itemDto);
-    }
-    public async Task DeleteItemInfo(int roomId, int itemId)
-    {
-        await services.ItemService.DeleteItemAsync(roomId, itemId, true);
-
-        await Clients.Group(roomId.ToString())
-            .SendAsync("DeleteItem", itemId);
-    }
-    #endregion
     public async override Task OnDisconnectedAsync(Exception? exception)
     {
         var dmLogin = Context.User?.FindFirst(ClaimTypes.Name)?.Value;

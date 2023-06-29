@@ -20,7 +20,7 @@ public class RoomHub : Hub
     public override async Task OnConnectedAsync()
     {
         var rooms = await services.RoomService.GetAllRooms(false);
-        await Clients.Caller.SendAsync("AddedRoom", rooms );
+        await Clients.Caller.SendAsync("AddedRooms", rooms );
         await base.OnConnectedAsync();
     }
 }

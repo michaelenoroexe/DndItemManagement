@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using API.Hubs;
+using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Service.Contracts;
 using Shared.DataTransferObjects.Item;
 
@@ -10,8 +13,13 @@ namespace API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IServiceManager service;
+        private readonly IHubContext<ItemHub> itemHub;
 
-        public ItemController(IServiceManager service) => this.service = service;
+        public ItemController(IServiceManager service, IHubContext<ItemHub> itemHub)
+        {
+            this.service = service;
+            this.itemHub = itemHub;
+        }
 
         [HttpGet("category/{categoryId}/items")]
         public async Task<IActionResult> GetCategoryItems(int categoryId)
@@ -43,6 +51,8 @@ namespace API.Controllers
             var item = await service.ItemService
                 .CreateItemAsync(roomId, itemForCreation, true);
 
+            await itemHub.Clients.Group("r" + roomId).SendAsync("AddedItem", item);
+
             return Created($"dm/{dmId}/rooms/{roomId}/items/{item.Id}", item);
         }
 
@@ -52,48 +62,33 @@ namespace API.Controllers
             await service.ItemService
                 .DeleteItemAsync(roomId, id, true);
 
-            return NoContent();
-        }
-
-        [HttpPut]
-        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
-        public async Task<IActionResult> UpdateItemForDm
-            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
-        {
-            await service.ItemService.UpdateItemAsync(roomId, id, itemForUpdate, false, true);
+            await itemHub.Clients.Group("r" + roomId).SendAsync("DeletedItem", id);
 
             return NoContent();
         }
 
         [HttpPut]
         [Route("rooms/{roomId}/items/{id}")]
+        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> UpdateItemForRoom
             (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
         {
-            var room = await service.RoomService.GetFullRoomAsync(id, false);
+            var item = await service.ItemService.UpdateItemAsync(roomId, id, itemForUpdate, false, true);
 
-            await service.ItemService.UpdateItemAsync(room.Id, id, itemForUpdate, false, true);
+            await itemHub.Clients.Group("r" + roomId).SendAsync("UpdatedItem", item);
 
             return NoContent();
         }
 
-        [HttpPatch("dm/{dmId}/rooms/{roomId}/items/{id}")]
+        [HttpPatch]
+        [Route("rooms/{roomId}/items/{id}")]
+        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> PatchItemForRoom
-            (int dmId, int roomId, int id, [FromBody] JsonPatchDocument<ItemForUpdateDto> patchDoc)
+            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemDto)
         {
-            if (patchDoc is null)
-                return BadRequest("pathDoc object sent from client is null");
+            var item = await service.ItemService.UpdateItemAsync(roomId,  id, itemDto, false, true);
 
-            var result = await service.ItemService.GetItemForPatchAsync(roomId, id, false, true);
-
-            patchDoc.ApplyTo(result.itemToPatch, ModelState);
-
-            TryValidateModel(result.itemToPatch);
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
-            await service.ItemService.SaveChangesForPatchAsync(result.itemToPatch, result.itemEntity);
+            await itemHub.Clients.Group("r" + roomId).SendAsync("UpdatedItem", item);
 
             return NoContent();
         }

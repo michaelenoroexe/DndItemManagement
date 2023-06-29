@@ -76,26 +76,7 @@ internal sealed class CharacterItemsService : ICharacterItemsService
         return CharacterItemToReturn;
     }
 
-    public async Task<(CharacterItemForUpdateDto chItemToPatch, CharacterItem chItemEntity)>
-        GetCharacterItemForPatchAsync(int characterId, int itemId, bool trackChanges)
-    {
-        await CheckIfCharacterExists(characterId, trackChanges);
-        await CheckIfItemExists(itemId, trackChanges);
-
-        var chItemDb = await GetCharacterItemAndCheckIfItExists(characterId, itemId, trackChanges);
-
-        var chItemToPatch = mapper.Map<CharacterItemForUpdateDto>(chItemDb);
-
-        return (chItemToPatch, chItemDb);
-    }
-
-    public async Task SaveChangesForPatchAsync(CharacterItemForUpdateDto characterItemToPatch, CharacterItem characterItemEntity)
-    {
-        mapper.Map(characterItemToPatch, characterItemEntity);
-        await repository.SaveAsync();
-    }
-
-    public async Task UpdateCharacterItemAsync(int characterId, int itemId, 
+    public async Task<CharacterItemDto> UpdateCharacterItemAsync(int characterId, int itemId, 
         CharacterItemForUpdateDto characterItemForUpdate, bool trackChanges)
     {
         await CheckIfCharacterExists(characterId, trackChanges);
@@ -105,5 +86,7 @@ internal sealed class CharacterItemsService : ICharacterItemsService
 
         mapper.Map(characterItemForUpdate, chItemDb);
         await repository.SaveAsync();
+
+        return mapper.Map<CharacterItemDto>(chItemDb);
     }
 }

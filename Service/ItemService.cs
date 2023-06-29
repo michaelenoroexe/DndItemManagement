@@ -92,7 +92,7 @@ namespace Service.Contracts
             await repository.SaveAsync();
         }
 
-        public async Task UpdateItemAsync(int roomId, int id,
+        public async Task<ItemDto> UpdateItemAsync(int roomId, int id,
             ItemForUpdateDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges)
         {
             await CheckIfRoomExists(roomId);
@@ -100,22 +100,8 @@ namespace Service.Contracts
 
             mapper.Map(itemForUpdate, itemDb);
             await repository.SaveAsync();
-        }
 
-        public async Task<(ItemForUpdateDto itemToPatch, Item itemEntity)> GetItemForPatchAsync(
-            int roomId, int id, bool roomTrackChanges, bool itemTrackChanges)
-        {
-            await CheckIfRoomExists(roomId);
-            var itemDb = await GetItemAndCheckIfItExists(id, itemTrackChanges);
-
-            var itemToPatch = mapper.Map<ItemForUpdateDto>(itemDb);
-
-            return (itemToPatch, itemDb);
-        }
-        public async Task SaveChangesForPatchAsync(ItemForUpdateDto itemToPatch, Item itemEntity)
-        {
-            mapper.Map(itemToPatch, itemEntity);
-            await repository.SaveAsync();
+            return mapper.Map<ItemDto>(itemDb);
         }
     }
 }

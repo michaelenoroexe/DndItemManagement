@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using API.Hubs;
+using Entities.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Service.Contracts;
 using Shared.DataTransferObjects.CharacterItem;
 
@@ -11,8 +14,13 @@ namespace API.Controllers
     public class CharacterItemController : ControllerBase
     {
         private readonly IServiceManager service;
+        private readonly IHubContext<ItemHub> itemHub;
 
-        public CharacterItemController(IServiceManager service) => this.service = service;
+        public CharacterItemController(IServiceManager service, IHubContext<ItemHub> itemHub)
+        {
+            this.service = service;
+            this.itemHub = itemHub;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetCharacterItems(int characterId)
@@ -29,6 +37,8 @@ namespace API.Controllers
             var chItem = await service.CharacterItemsService
                 .CreateCharacterItemAsync(characterId, itemId, itemParameters, true);
 
+            await itemHub.Clients.Group("c" + characterId).SendAsync("AddedCharacterItem", chItem);
+
             return Created($"/api/rooms/{roomId}/character/{characterId}/chItems{itemId}", chItem);
         }
 
@@ -39,6 +49,8 @@ namespace API.Controllers
             await service.CharacterItemsService
                 .DeleteCharacterItemAsync(characterId, itemId, true);
 
+            await itemHub.Clients.Group("c" + characterId).SendAsync("DeletedCharacterItem", new { CharacterId = characterId, ItemId = itemId });
+
             return NoContent();
         }
 
@@ -46,32 +58,23 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateCharacterItemParameters
             (int characterId, int itemId, [FromBody] CharacterItemForUpdateDto itemParameters)
         {
-            await service.CharacterItemsService.UpdateCharacterItemAsync
+            var chItem = await service.CharacterItemsService.UpdateCharacterItemAsync
                 (characterId, itemId, itemParameters, true);
+
+            await itemHub.Clients.Group("c" + characterId).SendAsync("UpdatedCharacterItem", chItem);
 
             return NoContent();
         }
 
         [HttpPatch("{itemId}")]
-        public async Task<IActionResult> UpdateCharacterItemParameters
-            (int roomId, int characterId, int itemId, 
-            [FromBody] JsonPatchDocument<CharacterItemForUpdateDto> patchDoc)
+        public async Task<IActionResult> UpdatePartCharacterItemParameters
+            (int characterId, int itemId, 
+            [FromBody] CharacterItemForUpdateDto itemParameters)
         {
-            if (patchDoc is null)
-                return BadRequest("patchDoc object sent from client is null.");
+            var chItem = await service.CharacterItemsService
+                .UpdateCharacterItemAsync(characterId, itemId, itemParameters, true);
 
-            var result = await service.CharacterItemsService.GetCharacterItemForPatchAsync
-                (characterId, itemId, true);
-
-            patchDoc.ApplyTo(result.chItemToPatch);
-
-            TryValidateModel(result.chItemToPatch);
-
-            if (!ModelState.IsValid)
-                return UnprocessableEntity(ModelState);
-
-            await service.CharacterItemsService.SaveChangesForPatchAsync
-                (result.chItemToPatch, result.chItemEntity);
+            await itemHub.Clients.Group("c" + characterId).SendAsync("UpdatedCharacterItem", chItem);
 
             return NoContent();
         }

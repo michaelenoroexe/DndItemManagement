@@ -3,7 +3,7 @@ import { Room, RoomWithDm } from "../model/room";
 import * as signalR from "@microsoft/signalr";
 import { environment } from "src/environment";
 import { DmService } from "./dm.service";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +26,8 @@ export class RoomService {
         return this.http.get<Room[]>(`${environment.apiURL}dm/${dmId}/rooms`);
     }
     constructor(private dmService:DmService, private http:HttpClient) {
+        let patchDoc = {name: "NewName"}
+        this.http.patch<Room>(`${environment.apiURL}dm/1/rooms/1`, patchDoc).subscribe((nex) => {});
         const token = localStorage.getItem("Token")!;
         this.roomHub = new signalR.HubConnectionBuilder()
                             .withUrl(environment.apiURL + 'hubs/roomHub')
@@ -45,7 +47,7 @@ export class RoomService {
             this.wached = false;
         }
     }
-    public GetRoom(roomId:number) {
+    public GetRoom(roomId:number) {        
         return this.http.get<Room>(`${environment.apiURL}rooms/${roomId}`);
     }
     public StartRoom(room:Room) {
@@ -63,15 +65,15 @@ export class RoomService {
         room, {headers: {"Authorization": "Bearer " + token}});
     }
     private ConfigureHub() {
-        this.roomHub.on("AddedRoom", rooms => {
+        this.roomHub.on("AddedRooms", rooms => {
             rooms.forEach((r:any) => this.allRoomList.push(r));
             this.UpdateDmRoomList();
         });
-        this.roomHub.on("Update", (room:Room) => {  
+        this.roomHub.on("UpdatedRoom", (room:Room) => {  
             const changedRoom = this.allRoomList.find(r => r.id == room.id)!;
             changedRoom.name = room.name;
         });
-        this.roomHub.on("DeleteRoom", roomId => {
+        this.roomHub.on("DeletedRoom", roomId => {
             const roomIndex = this.allRoomList.findIndex(r => r.id == roomId);
             this.allRoomList.splice(roomIndex, 1);
         });

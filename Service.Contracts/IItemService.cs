@@ -11,9 +11,6 @@ public interface IItemService
     Task<ItemDto> CreateItemAsync(int roomId,
         ItemForCreationDto itemForCreation, bool trackChanges);
     Task DeleteItemAsync(int roomId, int id, bool trackChanges);
-    Task UpdateItemAsync(int roomId, int id,
+    Task<ItemDto> UpdateItemAsync(int roomId, int id,
         ItemForUpdateDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges);
-    Task<(ItemForUpdateDto itemToPatch, Item itemEntity)> GetItemForPatchAsync(
-        int roomId, int id, bool compTrackChanges, bool empTrackChanges);
-    Task SaveChangesForPatchAsync(ItemForUpdateDto itemToPatch, Item itemEntity);
 }

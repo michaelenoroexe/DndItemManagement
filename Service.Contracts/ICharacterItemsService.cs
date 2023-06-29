@@ -9,9 +9,6 @@ public interface ICharacterItemsService
     Task<CharacterItemDto> CreateCharacterItemAsync(int characterId, int itemId,
         CharacterItemForCreationDto chItemForCreation, bool trackChanges);
     Task DeleteCharacterItemAsync(int characterId, int itemId, bool trackChanges);
-    Task UpdateCharacterItemAsync(int characterId, int itemId,
+    Task<CharacterItemDto> UpdateCharacterItemAsync(int characterId, int itemId,
     CharacterItemForUpdateDto chItemForUpdate, bool trackChanges);
-    Task<(CharacterItemForUpdateDto chItemToPatch, CharacterItem chItemEntity)> GetCharacterItemForPatchAsync(
-        int characterId, int itemId, bool trackChanges);
-    Task SaveChangesForPatchAsync(CharacterItemForUpdateDto chItemToPatch, CharacterItem chItemEntity);
 }
