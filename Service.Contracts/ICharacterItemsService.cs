@@ -11,4 +11,6 @@ public interface ICharacterItemsService
     Task DeleteCharacterItemAsync(int characterId, int itemId, bool trackChanges);
     Task<CharacterItemDto> UpdateCharacterItemAsync(int characterId, int itemId,
     CharacterItemForUpdateDto chItemForUpdate, bool trackChanges);
+    Task<CharacterItemDto> PartialUpdateCharacterItemAsync(int characterId, int itemId,
+    CharacterItemForPatchDto chItemForUpdate, bool trackChanges);
 }

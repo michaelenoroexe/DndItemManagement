@@ -89,4 +89,19 @@ internal sealed class CharacterItemsService : ICharacterItemsService
 
         return mapper.Map<CharacterItemDto>(chItemDb);
     }
+
+    public async Task<CharacterItemDto> PartialUpdateCharacterItemAsync(int characterId, int itemId, 
+        CharacterItemForPatchDto chItemForUpdate, bool trackChanges)
+    {
+        await CheckIfCharacterExists(characterId, trackChanges);
+        await CheckIfItemExists(itemId, trackChanges);
+
+        var chItemDb = await GetCharacterItemAndCheckIfItExists(characterId, itemId, trackChanges);
+
+        if (chItemForUpdate.ItemNumber is not null) chItemDb.ItemNumber = chItemForUpdate.ItemNumber.Value;
+        if (chItemForUpdate.CurrentDurability is not null) chItemDb.CurrentDurability = chItemForUpdate.CurrentDurability.Value;
+        await repository.SaveAsync();
+
+        return mapper.Map<CharacterItemDto>(chItemDb);
+    }
 }

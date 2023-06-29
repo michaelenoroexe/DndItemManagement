@@ -69,10 +69,10 @@ namespace API.Controllers
         [HttpPatch("{itemId}")]
         public async Task<IActionResult> UpdatePartCharacterItemParameters
             (int characterId, int itemId, 
-            [FromBody] CharacterItemForUpdateDto itemParameters)
+            [FromBody] CharacterItemForPatchDto itemParameters)
         {
             var chItem = await service.CharacterItemsService
-                .UpdateCharacterItemAsync(characterId, itemId, itemParameters, true);
+                .PartialUpdateCharacterItemAsync(characterId, itemId, itemParameters, true);
 
             await itemHub.Clients.Group("c" + characterId).SendAsync("UpdatedCharacterItem", chItem);
 

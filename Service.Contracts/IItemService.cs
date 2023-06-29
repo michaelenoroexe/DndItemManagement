@@ -13,4 +13,6 @@ public interface IItemService
     Task DeleteItemAsync(int roomId, int id, bool trackChanges);
     Task<ItemDto> UpdateItemAsync(int roomId, int id,
         ItemForUpdateDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges);
+    Task<ItemDto> PartialUpdateItemAsync(int roomId, int id,
+        ItemForPatchDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges);
 }

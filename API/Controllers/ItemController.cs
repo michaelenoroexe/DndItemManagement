@@ -84,9 +84,9 @@ namespace API.Controllers
         [Route("rooms/{roomId}/items/{id}")]
         [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> PatchItemForRoom
-            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemDto)
+            (int dmId, int roomId, int id, [FromBody] ItemForPatchDto itemDto)
         {
-            var item = await service.ItemService.UpdateItemAsync(roomId,  id, itemDto, false, true);
+            var item = await service.ItemService.PartialUpdateItemAsync(roomId,  id, itemDto, false, true);
 
             await itemHub.Clients.Group("r" + roomId).SendAsync("UpdatedItem", item);
 

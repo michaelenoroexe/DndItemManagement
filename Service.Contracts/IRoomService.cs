@@ -14,4 +14,6 @@ public interface IRoomService
     Task DeleteRoomAsync(int dmId, int id, bool trackChanges);
     Task<RoomDto> UpdateRoomAsync(int dmId, int id,
         RoomForUpdateDto roomForUpdate, bool dmTrackChanges, bool roomTrackChanges);
+    Task<RoomDto> PartialUpdateRoomAsync(int dmId, int id,
+        RoomForUpdateDto roomForUpdate, bool dmTrackChanges, bool roomTrackChanges);
 }

@@ -70,8 +70,7 @@ internal sealed class DMService : IDMService
     public async Task UpdateDMAsync(int id, DMForUpdateDto dmForUpdate, bool trackChanges)
     {
         var dmDb = await GetDMAndCheckIfItExists(id, trackChanges);
-        if (dmDb.Password is not null)
-            dmDb.Password = hasher.HashPassword(dmDb.Password);
+        dmDb.Password = hasher.HashPassword(dmForUpdate.Password!);
 
         mapper.Map(dmForUpdate, dmDb);
         await repository.SaveAsync();
@@ -83,5 +82,16 @@ internal sealed class DMService : IDMService
 
         repository.DM.DeleteDM(dm);
         await repository.SaveAsync();
+    }
+
+    public async Task PartialUpdateDMAsync(int id, DMForUpdateDto dmForUpdate, bool trackChanges)
+    {
+        var dmDb = await GetDMAndCheckIfItExists(id, trackChanges);
+
+        if (dmForUpdate.Login is not null) dmDb.Login = dmForUpdate.Login;
+        if (dmForUpdate.Password is not null) dmDb.Password = hasher.HashPassword(dmForUpdate.Password);
+
+        mapper.Map(dmForUpdate, dmDb);
+        await repository.SaveAsync(); 
     }
 }

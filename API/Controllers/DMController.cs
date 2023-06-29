@@ -68,7 +68,7 @@ namespace API.Controllers
         public async Task<IActionResult> PartiallyUpdateDm(int id,
             [FromBody] DMForUpdateDto dMForUpdate) 
         {
-            await service.DMService.UpdateDMAsync(id, dMForUpdate, true);
+            await service.DMService.PartialUpdateDMAsync(id, dMForUpdate, true);
             
             return NoContent();
         }

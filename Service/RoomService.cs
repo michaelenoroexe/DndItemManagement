@@ -100,4 +100,19 @@ internal sealed class RoomService : IRoomService
     }
     public async Task<Room> GetFullRoomAsync(int id, bool trackChanges) =>
         await GetRoomAndCheckIfItExists(id, trackChanges);
+
+    public async Task<RoomDto> PartialUpdateRoomAsync(int dmId, int id, 
+        RoomForUpdateDto roomForUpdate, bool dmTrackChanges, bool roomTrackChanges)
+    {
+        await CheckIfDmExists(dmId, dmTrackChanges);
+
+        var roomDb = await GetRoomAndCheckIfItExists(id, roomTrackChanges);
+
+        if (roomForUpdate.Name is not null) roomDb.Name = roomForUpdate.Name;
+        if (roomForUpdate.Password is not null) roomDb.Password = roomForUpdate.Password;
+        if (roomForUpdate.Started.HasValue) roomDb.Started = roomForUpdate.Started.Value;
+        await repository.SaveAsync();
+
+        return mapper.Map<RoomDto>(roomDb);
+    }
 }

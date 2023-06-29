@@ -103,5 +103,22 @@ namespace Service.Contracts
 
             return mapper.Map<ItemDto>(itemDb);
         }
+
+        public async Task<ItemDto> PartialUpdateItemAsync(int roomId, int id, 
+            ItemForPatchDto itemForUpdate, bool roomTrackChanges, bool itemTrackChanges)
+        {
+            await CheckIfRoomExists(roomId);
+            var itemDb = await GetItemAndCheckIfItExists(id, itemTrackChanges);
+
+            if (itemForUpdate.Name is not  null) itemDb.Name = itemForUpdate.Name;
+            if (itemForUpdate.MaxDurability is not  null) itemDb.MaxDurability = itemForUpdate.MaxDurability.Value;
+            if (itemForUpdate.Price is not  null) itemDb.Price = itemForUpdate.Price.Value;
+            if (itemForUpdate.Weight is not  null) itemDb.Weight = itemForUpdate.Weight.Value;
+            if (itemForUpdate.SecretItemDescription is not  null) itemDb.SecretItemDescription = itemForUpdate.SecretItemDescription;
+            if (itemForUpdate.ItemDescription is not  null) itemDb.ItemDescription = itemForUpdate.ItemDescription;
+            await repository.SaveAsync();
+
+            return mapper.Map<ItemDto>(itemDb);
+        }
     }
 }

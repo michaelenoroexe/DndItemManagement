@@ -78,7 +78,7 @@ namespace API.Controllers
         public async Task<IActionResult> PartiallyUpdateRoom(int dmId, int id,
             [FromBody] RoomForUpdateDto roomForUpdate)
         {
-            await service.RoomService.UpdateRoomAsync(dmId, id, roomForUpdate, false, true);
+            await service.RoomService.PartialUpdateRoomAsync(dmId, id, roomForUpdate, false, true);
             await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
 
             return NoContent();

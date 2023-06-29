@@ -11,4 +11,5 @@ public interface IDMService
     Task<DMDto> RegisterDMAsync(DMForRegistrationDto dm);
     Task DeleteDMAsync(int dmId);
     Task UpdateDMAsync(int id, DMForUpdateDto dmForUpdate, bool trackChanges);
+    Task PartialUpdateDMAsync(int id, DMForUpdateDto dmForUpdate, bool trackChanges);
 }
