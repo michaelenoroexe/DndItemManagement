@@ -3,6 +3,7 @@ import { Room } from '../model/room';
 import { DmService } from '../services/dm.service';
 import { RoomService } from '../services/room.service';
 import { ActivatedRoute } from '@angular/router';
+import { ItemService } from '../services/item.service';
 
 @Component({
   selector: 'app-room-management',
@@ -17,10 +18,11 @@ export class RoomManagementComponent implements OnInit {
   changedPassword: string ="******";
   currAction!: () => void;
 
-  rooms: Room[] = []
+  rooms: Room[]
 
-  constructor(private roomService:RoomService, private route:ActivatedRoute) {
-    roomService.StartWatchRoomList();
+  constructor(itemService:ItemService,  private roomService:RoomService, private route:ActivatedRoute) {
+    itemService.StopWatch();
+    roomService.StartWatch();
     this.rooms = roomService.dmRoomList;
   }
   ngOnInit(): void {

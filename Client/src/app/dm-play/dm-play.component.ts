@@ -6,6 +6,7 @@ import { CharacterItemHubService } from '../services/characterItemHub.service';
 import { firstValueFrom } from 'rxjs';
 import { Room } from '../model/room';
 import { RoomService } from '../services/room.service';
+import { ItemService } from '../services/item.service';
 
 @Component({
   selector: 'app-dm-play',
@@ -19,11 +20,14 @@ export class DmPlayComponent implements OnInit {
   characters:Character[] = [];
 
   constructor(
+    itemService:ItemService,
     private route:ActivatedRoute, 
     private characterService:CharacterService,
     private hubService:CharacterItemHubService,
     private roomService:RoomService
   ) {
+    roomService.StopWatch();
+    itemService.StartWatch();
     hubService.StartWatchAndActivate(this.roomId);
   }
 

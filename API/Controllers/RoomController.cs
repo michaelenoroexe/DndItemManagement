@@ -45,6 +45,15 @@ namespace API.Controllers
 
             return Ok(dms);
         }
+        [HttpPost("auth")]
+        public async Task<ActionResult> SignInRoom(RoomForAuthenticationDto room)
+        {
+            var valResult = await service.AuthenticationService.ValidateRoom(room);
+            if (valResult == false) throw new UnauthorizedAccessException();
+            var dmLogin = HttpContext.User?.FindFirst(ClaimTypes.Name)?.Value;
+            string token = service.AuthenticationService.CreateToken(dmLogin, room.CharacterId);
+            return Ok(new { Tocken = token });
+        }
         [Authorize]
         [HttpPost("dm/{dmId}/rooms")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
@@ -74,6 +83,7 @@ namespace API.Controllers
             await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
             return NoContent();
         }
+        [Authorize]
         [HttpPatch("dm/{dmId}/rooms/{id:int}")]
         public async Task<IActionResult> PartiallyUpdateRoom(int dmId, int id,
             [FromBody] RoomForUpdateDto roomForUpdate)

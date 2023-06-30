@@ -56,6 +56,6 @@ export class CategoryComponent {
     this.newCharacterItem!.itemId = +it;
   }
   CreateNewItem() {
-    this.router.navigate(['items', {add:true}]);
+    this.router.navigate(['items', {roomId:this.roomId, add:true}]);
   }
 }

@@ -81,10 +81,14 @@ export class ItemService {
         this.hub.JoinRoom();
     }
     public AddItem(roomId:number, item:Item) {
-        this.http.post(`${environment.apiURL}rooms/${roomId}/items`, item);
+        const fullItem = item as any;
+        fullItem.roomId = roomId;
+        this.http.post(`${environment.apiURL}rooms/${roomId}/items`, fullItem).subscribe({next(ar) {}});
     }
     public FullChangeItem(roomId:number, item:Item) {
-        this.http.put(`${environment.apiURL}rooms/${roomId}/items/${item.id}`, item);
+        const fullItem = item as any;
+        fullItem.roomId = roomId;
+        this.http.put(`${environment.apiURL}rooms/${roomId}/items/${item.id}`, fullItem);
     }
     public DeleteItem(roomId:number, item:Item) {
         this.http.delete(`${environment.apiURL}rooms/${roomId}/items/${item.id}`);

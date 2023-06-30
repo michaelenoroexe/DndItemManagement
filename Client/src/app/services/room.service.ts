@@ -35,13 +35,13 @@ export class RoomService {
         this.ConfigureHub();
     }
 
-    public StartWatchRoomList() {
+    public StartWatch() {
         if (!this.wached) {
             this.roomHub.start();
             this.wached = true
         }
     }
-    public StopWatchRoomList() {
+    public StopWatch() {
         if (this.wached) {
             this.roomHub.stop();
             this.wached = false;

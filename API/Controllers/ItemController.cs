@@ -44,8 +44,8 @@ namespace API.Controllers
             return Ok(items);
         }
 
-        [HttpPost("dm/{dmId}/rooms/{roomId}/items")]
-        public async Task<IActionResult> PostItemForRoom(int dmId, int roomId,
+        [HttpPost("rooms/{roomId}/items")]
+        public async Task<IActionResult> PostItemForRoom(int roomId,
             [FromBody] ItemForCreationDto itemForCreation)
         {
             var item = await service.ItemService
@@ -53,7 +53,7 @@ namespace API.Controllers
 
             await itemHub.Clients.Group("r" + roomId).SendAsync("AddedItem", item);
 
-            return Created($"dm/{dmId}/rooms/{roomId}/items/{item.Id}", item);
+            return Created($"rooms/{roomId}/items/{item.Id}", item);
         }
 
         [HttpDelete("dm/{dmId}/rooms/{roomId}/items/{id}")]

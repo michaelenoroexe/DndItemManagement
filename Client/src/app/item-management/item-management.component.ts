@@ -19,7 +19,7 @@ export class ItemManagementComponent implements OnInit {
   penIcon = faPen;
   delIcon = faTrash;
 
-  room:Room = new Room(0, "", false);
+  room:Room = new Room(0, "asd", false);
   addNew:boolean = false;
   tempItem:Item = new Item(0, "", 1, 1, 1, "", "", 0, new ItemCategory(0, ""));
 
@@ -28,13 +28,18 @@ export class ItemManagementComponent implements OnInit {
     private roomService:RoomService,
     private route:ActivatedRoute,
     private dmService:DmService) {
+      roomService.StopWatch();
       itemService.StartWatch();
     }
   
   async ngOnInit(): Promise<void> {
     const th = this;
     this.roomService.GetRoom(+this.route.snapshot.paramMap.get('roomId')!)
-    .subscribe({next(ro:any) {th.room = ro}});
+    .subscribe({next(ro:any) {
+      th.room.id = ro.id;
+      th.room.name = ro.name;
+      th.room.started = ro.started;
+    }});
     const dm = (await this.dmService.GetFullDm()).body as any;
     if (dm.id == 0 || await this.ActivateRoom(dm.id)) {
       this.itemService.JoinRoom();

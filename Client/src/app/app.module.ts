@@ -9,10 +9,8 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faAngleDown as fAD, faAngleUp as fAU } from '@fortawesome/free-solid-svg-icons';
-import { GenControllPanelComponent } from './gen-control-panel/gen-control-panel.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { GlobalRoomTableComponent } from './welcome/global-room-table/global-room-table.component';
 import { UnauthorizedMenuComponent } from './welcome/unauthorized-menu/unauthorized-menu.component';
@@ -35,8 +33,6 @@ import { JoinRoomComponent } from './join-room/join-room.component';
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    GenControllPanelComponent,
     WelcomeComponent,
     GlobalRoomTableComponent,
     UnauthorizedMenuComponent,
