@@ -62,28 +62,6 @@ export class CharacterItemHubService {
     public JoinRoom() {
         this.itemHub.send("JoinRoom", null);
     }
-    public AddItem(roomId:number, item:Item) {
-        const request = item as any;
-        request.roomId = roomId;
-        this.itemHub.send("CreateItemInfo", request);
-    }
-    public ChangeItem(roomId:number, item:Item) {
-        let request = item as any;
-        request.roomId = roomId;
-        this.itemHub.send("UpdateItemInfo", request);
-    }
-    public DeleteItem(roomId:number, item:Item) {
-        this.itemHub.send("DeleteItemInfo", roomId, item.id);
-    }
-    public AddCharacterItem(chItem:CharacterItem) {
-        this.itemHub.send("AddCharacterItem", chItem);
-    }
-    public ChangeCharacterItem(chItem:CharacterItem) {
-        this.itemHub.send("UpdateCharacterItem", chItem);
-    }
-    public DeleteCharacterItem(chItem:CharacterItem) {
-        this.itemHub.send("DeleteCharacterItem", chItem.characterId, chItem.itemId);
-    }
     private ConfigureHub() {
         this.itemHub.on("AddedCharacterItem", (chitem: CharacterItem) => {
             this.addchEvent.forEach(e => e(chitem));

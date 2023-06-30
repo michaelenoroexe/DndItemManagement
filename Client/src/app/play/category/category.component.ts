@@ -44,7 +44,7 @@ export class CategoryComponent {
     this.addNewCharacterItem = true;
   }
   AddCharacterItem() {
-    this.chItemService.AddChItem(this.newCharacterItem!);
+    this.chItemService.AddChItem(this.roomId, this.newCharacterItem!);
     this.addNewCharacterItem = false;
   }
   CancelCharacterItem() {

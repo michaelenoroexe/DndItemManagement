@@ -69,7 +69,7 @@ export class ItemManagementComponent implements OnInit {
     this.itemService.AddItem(this.room.id, this.tempItem);
   }
   UpdateItem() {
-    this.itemService.ChangeItem(this.room.id, this.tempItem);
+    this.itemService.FullChangeItem(this.room.id, this.tempItem);
   }
   Cancel() {
     this.tempItem = new Item(0, "", 1, 1, 1, "", "", 0, new ItemCategory(0, ""));

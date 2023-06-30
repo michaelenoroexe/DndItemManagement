@@ -35,7 +35,7 @@ export class PlayItemComponent implements OnInit {
   }
   ChangeCharacterInfo() {
     this.item.currentDurability = +this.item.currentDurability;
-    this.chItemService.ChangeChItem(this.item);
+    this.chItemService.FullChangeChItem(this.roomId, this.item);
   }
   ChangeFullInfo() {
     this.changingItem.currentDurability = +this.changingItem.currentDurability;
@@ -45,8 +45,8 @@ export class PlayItemComponent implements OnInit {
     this.changingItemInfo.price = +this.changingItemInfo.price;
     this.changingItemInfo.weight = +this.changingItemInfo.weight;
 
-    this.chItemService.ChangeChItem(this.changingItem);
-    this.itemService.ChangeItem(this.roomId, this.changingItemInfo);
+    this.chItemService.FullChangeChItem(this.roomId, this.changingItem);
+    this.itemService.FullChangeItem(this.roomId, this.changingItemInfo);
     this.full = false;
     this.changed = false;
   }

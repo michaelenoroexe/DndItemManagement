@@ -44,13 +44,19 @@ export class CharacterItemService {
         })
         return chItems;
     }
-    public AddChItem(chItem:CharacterItem) {
-        this.hub.AddCharacterItem(chItem);
+    public AddChItem(roomId:number, chItem:CharacterItem) {
+        this.http.post(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
+        chItem);
     }
-    public ChangeChItem(chItem:CharacterItem) {
-        this.hub.ChangeCharacterItem(chItem);
+    public FullChangeChItem(roomId:number, chItem:CharacterItem) {
+        this.http.put(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
+        chItem);
     }
-    public DeleteChItem(chItem:CharacterItem) {
-        this.hub.DeleteCharacterItem(chItem);
+    public PartialChangeChItem(roomId:number, chItem:any) {
+        this.http.patch(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
+        chItem);
+    }
+    public DeleteChItem(roomId:number, chItem:CharacterItem) {
+        this.http.delete(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`);
     }
 }
