@@ -74,12 +74,6 @@ export class ItemService {
     public async GetCategories() {
         return firstValueFrom(this.http.get<ItemCategory[]>(`${environment.apiURL}itemcategories`));
     }
-    public ActivateRoom(roomId:number) {
-        this.hub.ActivateRoom(roomId);
-    }
-    public JoinRoom() {
-        this.hub.JoinRoom();
-    }
     public AddItem(roomId:number, item:Item) {
         const fullItem = item as any;
         fullItem.roomId = roomId;

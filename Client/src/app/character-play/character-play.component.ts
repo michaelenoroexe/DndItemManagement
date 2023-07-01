@@ -21,21 +21,18 @@ export class CharacterPlayComponent implements OnInit {
     private characterService:CharacterService,
     private hubService:CharacterItemHubService
   ) {
-    hubService.StartWatchAndJoin();
+    this.roomId = +this.route.snapshot.paramMap.get('roomId')!;
+    this.character.id = +this.route.snapshot.paramMap.get('chId')!;
+    hubService.StartWatchAndJoinPlayer(this.roomId, this.character.id);
   }
 
   ngOnInit(): void {
-    this.roomId = +this.route.snapshot.paramMap.get('roomId')!;
-    if (this.character.id == 0) {
-      const th = this;
-      this.character.id = +this.route.snapshot.paramMap.get('chId')!;
-      this.characterService.GetCharacterObserv(this.roomId)
-        .subscribe({
-          next(val:Character[]) {
-            th.character.name = val.find(c => c.id == th.character.id)!.name
-          }
-        });
-    }
+    const th = this;
+    this.characterService.GetCharacterObserv(this.roomId)
+      .subscribe({
+        next(val:Character[]) {
+          th.character.name = val.find(c => c.id == th.character.id)!.name
+        }
+      });
   }
-
 }

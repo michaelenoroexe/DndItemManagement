@@ -26,8 +26,6 @@ export class RoomService {
         return this.http.get<Room[]>(`${environment.apiURL}dm/${dmId}/rooms`);
     }
     constructor(private dmService:DmService, private http:HttpClient) {
-        let patchDoc = {name: "NewName"}
-        this.http.patch<Room>(`${environment.apiURL}dm/1/rooms/1`, patchDoc).subscribe((nex) => {});
         const token = localStorage.getItem("Token")!;
         this.roomHub = new signalR.HubConnectionBuilder()
                             .withUrl(environment.apiURL + 'hubs/roomHub')
@@ -49,6 +47,11 @@ export class RoomService {
     }
     public GetRoom(roomId:number) {        
         return this.http.get<Room>(`${environment.apiURL}rooms/${roomId}`);
+    }
+    public SignInRoom(roomId:number, password:string, characterId:number) {
+        const token = localStorage.getItem("Token")!;
+        return this.http.post(`${environment.apiURL}rooms/auth`, 
+            { id:roomId, password, characterId }, {headers: {"Authorization": "Bearer " + token}});
     }
     public StartRoom(room:Room) {
         room.started = true;

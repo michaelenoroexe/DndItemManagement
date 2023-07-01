@@ -20,15 +20,13 @@ export class DmPlayComponent implements OnInit {
   characters:Character[] = [];
 
   constructor(
-    itemService:ItemService,
+    hubService:CharacterItemHubService,
     private route:ActivatedRoute, 
     private characterService:CharacterService,
-    private hubService:CharacterItemHubService,
     private roomService:RoomService
   ) {
     roomService.StopWatch();
-    itemService.StartWatch();
-    hubService.StartWatchAndActivate(this.roomId);
+    hubService.StartWatchAndJoinDm(this.roomId);
   }
 
   async ngOnInit() {

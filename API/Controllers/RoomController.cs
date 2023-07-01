@@ -45,7 +45,7 @@ namespace API.Controllers
 
             return Ok(dms);
         }
-        [HttpPost("auth")]
+        [HttpPost("rooms/auth")]
         public async Task<ActionResult> SignInRoom(RoomForAuthenticationDto room)
         {
             var valResult = await service.AuthenticationService.ValidateRoom(room);

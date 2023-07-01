@@ -9,6 +9,7 @@ import { faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DmService } from '../services/dm.service';
 import { firstValueFrom } from 'rxjs';
 import { DM } from '../model/dm';
+import { CharacterItemHubService } from '../services/characterItemHub.service';
 
 @Component({
   selector: 'app-item-management',
@@ -24,12 +25,13 @@ export class ItemManagementComponent implements OnInit {
   tempItem:Item = new Item(0, "", 1, 1, 1, "", "", 0, new ItemCategory(0, ""));
 
   constructor(
+    hubService:CharacterItemHubService,
     public itemService:ItemService, 
     private roomService:RoomService,
     private route:ActivatedRoute,
     private dmService:DmService) {
       roomService.StopWatch();
-      itemService.StartWatch();
+      hubService.StartWatchAndJoinDm(+this.route.snapshot.paramMap.get('roomId')!);
     }
   
   async ngOnInit(): Promise<void> {
@@ -40,20 +42,6 @@ export class ItemManagementComponent implements OnInit {
       th.room.name = ro.name;
       th.room.started = ro.started;
     }});
-    const dm = (await this.dmService.GetFullDm()).body as any;
-    if (dm.id == 0 || await this.ActivateRoom(dm.id)) {
-      this.itemService.JoinRoom();
-    }
-  }
-  async ActivateRoom(dmId:number) {
-    const th = this;
-    let active = false;
-    const roomLi = await firstValueFrom(this.roomService.GetDmRoomList(dmId));
-    const room = roomLi.find(r => r.id == th.room.id);
-    if (room == undefined) return active
-    active = true
-    th.itemService.ActivateRoom(room.id);
-    return active;
   }
   SelectItemForChange(item:Item) {
     this.tempItem.id = item.id;

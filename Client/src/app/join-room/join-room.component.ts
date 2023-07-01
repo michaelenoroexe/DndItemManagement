@@ -38,8 +38,12 @@ export class JoinRoomComponent {
     this.selectedCharacter = character;
   }
   SignIn() {
-    this.hubService.JoinRoomObj(this.room.id, this.password, this.selectedCharacter!.id)
-    this.router.navigate(["character/play", {roomId:this.room.id, chId:this.selectedCharacter!.id}]);
+    const th = this;
+    this.roomService.SignInRoom(this.room.id, this.password, this.selectedCharacter!.id).subscribe({
+      next(value) {
+        th.router.navigate(["character/play", {roomId:th.room.id, chId:th.selectedCharacter!.id}]);
+      },
+    });
   }
   SaveToken(token:string) {
     localStorage.setItem("Token", token);

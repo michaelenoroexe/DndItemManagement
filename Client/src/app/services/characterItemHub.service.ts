@@ -35,17 +35,19 @@ export class CharacterItemHubService {
             this.wached = true
         }
     }
-    public StartWatchAndJoin() {
+    public StartWatchAndJoinPlayer(roomId:number, characterId:number) {
         if (!this.wached) {
-            this.itemHub.start().then(() => this.JoinRoom());
-            this.wached = true
+            this.itemHub.start().then(() => this.JoinRoomPlayer(roomId, characterId));
+            this.wached = true;
         }
+        else this.JoinRoomPlayer(roomId, characterId);
     }
-    public StartWatchAndActivate(roomId:number) {
+    public StartWatchAndJoinDm(roomId:number) {
         if (!this.wached) {
-            this.itemHub.start().then(() => this.ActivateRoom(roomId));
+            this.itemHub.start().then(() => this.JoinRoomDm(roomId));
             this.wached = true
         }
+        else this.JoinRoomDm(roomId)
     }
     public StopWatch() {
         if (this.wached) {
@@ -53,14 +55,11 @@ export class CharacterItemHubService {
             this.wached = false;
         }
     }
-    public ActivateRoom(roomId:number) {
-        this.itemHub.send("ActivateRoom", roomId);
+    private JoinRoomPlayer(roomId:number, characterId:number) {
+        this.itemHub.send("PlayerJoinRoom", roomId, characterId);
     }
-    public JoinRoomObj(roomId:number, password:string, characterId:number) {
-        this.itemHub.send("JoinRoom", {id:roomId, password, characterId});
-    }
-    public JoinRoom() {
-        this.itemHub.send("JoinRoom", null);
+    private JoinRoomDm(roomId:number) {
+        this.itemHub.send("DmJoinRoom", roomId);
     }
     private ConfigureHub() {
         this.itemHub.on("AddedCharacterItem", (chitem: CharacterItem) => {
