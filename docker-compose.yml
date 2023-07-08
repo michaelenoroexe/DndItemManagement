@@ -11,7 +11,7 @@ services:
     - "5136:80"
    networks:
     - production
-
+    - elastic
   client:
    container_name: "client"
    build: "Client/"
@@ -19,7 +19,6 @@ services:
     - "80:80"
    networks:
     - production
-    - elastic
    # For faster testing angular builds.
    volumes:
     - type: bind

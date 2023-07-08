@@ -18,7 +18,7 @@ namespace API.Controllers
         public async Task<IActionResult> GetRoomCharacters(int roomId)
         {
             var characters = await service.CharacterService.GetRoomCharacters(roomId, false);
-
+            
             return Ok(characters);
         }
 
