@@ -4,6 +4,8 @@ import { RoomWithDm } from '../model/room';
 import { RoomService } from '../services/room.service';
 import { DmService } from '../services/dm.service';
 import { ItemService } from '../services/item.service';
+import { Logger, LoggerProvider } from '../services/logger.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -11,11 +13,17 @@ import { ItemService } from '../services/item.service';
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements AfterContentChecked {
+  logger : Logger
   menu : MenuState = MenuState.Unregistered;
   states = MenuState;
   public rooms: RoomWithDm[];
 
-  constructor(private dmService:DmService, roomService:RoomService, itemService:ItemService) {
+  constructor(private dmService:DmService, 
+      roomService:RoomService, 
+      itemService:ItemService, 
+      LogProv:LoggerProvider,
+      router:Router) {
+    this.logger = LogProv.GetLogger(router.url);
     roomService.StartWatch();
     itemService.StopWatch();
     if (dmService.dm.id == 0) this.menu = MenuState.Unregistered;
@@ -23,6 +31,9 @@ export class WelcomeComponent implements AfterContentChecked {
     this.rooms = roomService.allRoomList;
   }
   ngAfterContentChecked(): void {
-    if (this.menu != MenuState.Dm && this.dmService.dm.id != 0) this.menu = MenuState.Dm;
+    if (this.menu != MenuState.Dm && this.dmService.dm.id != 0) {
+      this.menu = MenuState.Dm;
+      this.logger.Information(`Initialized dm: ${this.dmService.dm.login}`);
+    }
   }
 }

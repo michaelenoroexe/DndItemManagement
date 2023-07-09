@@ -31,7 +31,6 @@ namespace API.Controllers
             if (name is null) return NoContent();
             var dm = await service.DMService.GetDMAsync(name, false);
             Log.Information("Getted dm: {@dm}", dm, "API");
-            throw new NotImplementedException();
             return Ok(dm);
         }
         [HttpPost]
