@@ -4,8 +4,17 @@ using API.Extensions;
 using API.Hubs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
+using Serilog.Exceptions;
 using Service.Contracts;
+
+Log.Logger = new LoggerConfiguration()
+    .Enrich.WithExceptionDetails()
+    .Enrich.WithProperty("Source", "API")
+    .WriteTo.Http("http://logstash:8080", null)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +22,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
+builder.Logging.AddSerilog(Log.Logger);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
@@ -39,7 +49,8 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.ConfigureExceptionHandler();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger(opt =>

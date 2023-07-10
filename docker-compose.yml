@@ -1,44 +1,93 @@
 version: '3.4'
-networks:
-  production:
 
 services:
   api:
-    env_file: api-environment.env
-    image: ${DOCKER_REGISTRY-}api
-    build:
-      context: .
-      dockerfile: API/Dockerfile
-    ports:
-      - "5136:80"
-    networks:
-      - production
-
+   env_file: api-environment.env
+   image: ${DOCKER_REGISTRY-}api
+   build:
+    context: .
+    dockerfile: API/Dockerfile
+   ports:
+    - "5136:80"
+   networks:
+    - production
+    - elastic
   client:
-    build: "Client/"
-    ports:
-      - "80:80"
-    networks:
-      - production
-    # For faster testing angular builds.
-    volumes:
-      - type: bind
-        source: Client/dist/client
-        target: /usr/share/nginx/html
-    depends_on: 
+   container_name: "client"
+   build: "Client/"
+   ports:
+    - "80:80"
+   networks:
+    - production
+    - elastic
+   # For faster testing angular builds.
+   volumes:
+    - type: bind
+      source: Client/dist/client
+      target: /usr/share/nginx/html
+   depends_on: 
     - api
 
   db:
-    container_name: "DndItem"
-    env_file: db-environment.env
-    ports:
-    -  1401:1433 
-    image: mcr.microsoft.com/mssql/server
-    restart: on-failure
-    networks:
-      - production
-    volumes:
-      -  sql-item-manage:/var/opt/mssql 
+   container_name: "DndItem"
+   env_file: db-environment.env
+   ports:
+    - 1401:1433 
+   image: mcr.microsoft.com/mssql/server
+   restart: on-failure
+   networks:
+    - production
+   volumes:
+    - sql-item-manage:/var/opt/mssql 
+
+  elastic:
+   container_name: logstorage
+   image: elasticsearch:8.8.1
+   ports:
+    - 9200:9200 
+    - 9300:9300 
+   environment:
+    - xpack.security.enabled=false
+    - discovery.type=single-node
+   volumes:
+    - logging-data:/usr/share/elasticsearch/data
+   networks: 
+    - elastic
+
+  logstash:
+   container_name: "logstash"
+   image: logstash:8.8.1
+   ports:
+    - 8080:8080
+   environment:
+    xpack.monitoring.enabled: false
+    xpack.monitoring.elasticsearch.ssl.verification_mode: "none"
+   volumes:
+    - type: bind
+      source: Logging\logstash\
+      target: /usr/share/logstash/pipeline/
+   depends_on:
+    - elastic
+   networks:
+    - elastic
+
+  kibana:
+   container_name: kibana
+   image: kibana:8.8.1
+   ports:
+    - 5601:5601
+   depends_on: 
+    - elastic
+   environment:
+    ELASTICSEARCH_HOSTS: http://elastic:9200
+   networks:
+    - elastic
+
+networks:
+  production:
+  elastic:
 
 volumes:
   sql-item-manage:
+  logging-data:
+  

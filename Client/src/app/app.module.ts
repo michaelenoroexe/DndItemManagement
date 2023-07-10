@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { HttpClientModule } from '@angular/common/http'
@@ -29,6 +29,7 @@ import { PlayItemComponent } from './play/category/play-item/play-item.component
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ItemManagementComponent } from './item-management/item-management.component';
 import { JoinRoomComponent } from './join-room/join-room.component';
+import { GlobalErrorLogger } from './services/logger.service';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,9 @@ import { JoinRoomComponent } from './join-room/join-room.component';
     MatSelectModule,
     MatFormFieldModule
   ],
-  providers: [],
+  providers: [
+    { provide: ErrorHandler, useClass: GlobalErrorLogger },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

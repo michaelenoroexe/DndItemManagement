@@ -1,6 +1,6 @@
 ﻿using API.ActionFilters;
-using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using Service.Contracts;
 using Shared.DataTransferObjects.DM;
 using System.Security.Claims;
@@ -13,7 +13,10 @@ namespace API.Controllers
     {
         private readonly IServiceManager service;
 
-        public DMController(IServiceManager service) => this.service = service;
+        public DMController(IServiceManager service)
+        {
+            this.service = service;
+        }
 
         [HttpGet]
         public async Task<IActionResult> GetDms() 
@@ -27,12 +30,13 @@ namespace API.Controllers
             var name = User.FindFirst(ClaimTypes.Name)?.Value;
             if (name is null) return NoContent();
             var dm = await service.DMService.GetDMAsync(name, false);
+
             return Ok(dm);
         }
         [HttpPost]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         public async Task<IActionResult> RegisterDm([FromBody] DMForRegistrationDto dMForRegistration) 
-        { 
+        {
             var dm = await service.DMService.RegisterDMAsync(dMForRegistration);
 
             return Created("/api/dm", dm);
@@ -46,7 +50,7 @@ namespace API.Controllers
             var character = User.FindFirst(ClaimTypes.Actor)?.Value;
             var token = service.AuthenticationService
                 .CreateToken(dMForAuth.Login, (character is null)? null : Convert.ToInt32(character));
-
+            
             return Ok(new { token = $"{token}" });
         }
         [HttpDelete("{id:int}")]
