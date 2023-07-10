@@ -33,7 +33,6 @@ export class WelcomeComponent implements AfterContentChecked {
   ngAfterContentChecked(): void {
     if (this.menu != MenuState.Dm && this.dmService.dm.id != 0) {
       this.menu = MenuState.Dm;
-      this.logger.Information(`Initialized dm: ${this.dmService.dm.login}`);
     }
   }
 }

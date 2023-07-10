@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable, isDevMode } from "@angular/core";
+import { ErrorHandler, Injectable, isDevMode } from "@angular/core";
 import { environment } from "src/environment";
 
 @Injectable({
@@ -15,6 +15,19 @@ export class LoggerProvider {
       isDevMode() ? LogLevel.Information : LogLevel.Warning,
       path
     )
+  }
+}
+@Injectable()
+export class GlobalErrorLogger implements ErrorHandler {
+
+  private logger:Logger
+
+  constructor(http:HttpClient) {
+    this.logger = new Logger(http, LogLevel.Error, "Global");
+  }
+
+  handleError(error: any): void {
+    this.logger.Error("Something went wrong", error);
   }
 }
 export class Logger {
@@ -34,16 +47,16 @@ export class Logger {
       RenderedMessage: message,
     }).subscribe({next() {}, error() {}});
   }
-  private LogErr(level:LogLevel, message:string, err:Error) {
+  private LogErr(level:LogLevel, err:Error) {
     this.http.post("http://localhost/log/", {
       Level: LogLevel[level],
       Properties: {
         Source: this.source,
         RequestPath: this.requestPath,
       },
-      Exception: JSON.stringify(err),
-      RenderedMessage: message,
-    }).subscribe({next() {}, error() {}});
+      Exception: err.stack,
+      RenderedMessage: err.message.split("Error:")[1]
+    }).subscribe({next(inf) {console.log(inf)}, error(err) {console.error(err)}});
   }
 
   constructor(http:HttpClient, logLevel:LogLevel, requestPath:string) {
@@ -64,13 +77,13 @@ export class Logger {
 
   public Error(message:string = "Error while execution", err:Error | null = null) {
     if (this.logLevel > LogLevel.Error) return;
-    if (err != null) this.LogErr(LogLevel.Error, message, err!)
+    if (err != null) this.LogErr(LogLevel.Error, err)
     else this.Log(LogLevel.Error, message)
   }
 
   public Critical(message:string = "Error while execution", err:Error | null = null) {
     if (this.logLevel > LogLevel.Critical) return;
-    if (err != null) this.LogErr(LogLevel.Error, message, err!)
+    if (err != null) this.LogErr(LogLevel.Error, err)
     else this.Log(LogLevel.Error, message)
   }
 }

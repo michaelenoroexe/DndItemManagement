@@ -30,7 +30,7 @@ namespace API.Controllers
             var name = User.FindFirst(ClaimTypes.Name)?.Value;
             if (name is null) return NoContent();
             var dm = await service.DMService.GetDMAsync(name, false);
-            Log.Information("Getted dm: {@dm}", dm, "API");
+
             return Ok(dm);
         }
         [HttpPost]
@@ -38,7 +38,7 @@ namespace API.Controllers
         public async Task<IActionResult> RegisterDm([FromBody] DMForRegistrationDto dMForRegistration) 
         {
             var dm = await service.DMService.RegisterDMAsync(dMForRegistration);
-            Log.Information("Created dm: {@dm}", dm);
+
             return Created("/api/dm", dm);
         }
         [HttpPost("login")]
@@ -50,7 +50,7 @@ namespace API.Controllers
             var character = User.FindFirst(ClaimTypes.Actor)?.Value;
             var token = service.AuthenticationService
                 .CreateToken(dMForAuth.Login, (character is null)? null : Convert.ToInt32(character));
-
+            
             return Ok(new { token = $"{token}" });
         }
         [HttpDelete("{id:int}")]
