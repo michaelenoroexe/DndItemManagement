@@ -2,18 +2,34 @@ version: '3.4'
 
 services:
   api:
-   env_file: api-environment.env
+   container_name: api
    image: ${DOCKER_REGISTRY-}api
    build:
     context: .
     dockerfile: API/Dockerfile
    ports:
     - "5136:80"
+   env_file: api-environment.env
    networks:
     - production
     - elastic
+   depends_on: 
+    - db
+
+  admin:
+   container_name: admin
+   build: "Administration/"
+   ports:
+    - 5137:80
+   env_file: admin-environment.env
+   networks:
+    - production
+    - elastic
+   depends_on: 
+    - db
+
   client:
-   container_name: "client"
+   container_name: client
    build: "Client/"
    ports:
     - "80:80"
@@ -27,13 +43,14 @@ services:
       target: /usr/share/nginx/html
    depends_on: 
     - api
+    - admin
 
   db:
    container_name: "DndItem"
-   env_file: db-environment.env
+   image: mcr.microsoft.com/mssql/server
    ports:
     - 1401:1433 
-   image: mcr.microsoft.com/mssql/server
+   env_file: db-environment.env
    restart: on-failure
    networks:
     - production
@@ -49,10 +66,10 @@ services:
    environment:
     - xpack.security.enabled=false
     - discovery.type=single-node
-   volumes:
-    - logging-data:/usr/share/elasticsearch/data
    networks: 
     - elastic
+   volumes:
+    - logging-data:/usr/share/elasticsearch/data
 
   logstash:
    container_name: "logstash"
@@ -62,13 +79,13 @@ services:
    environment:
     xpack.monitoring.enabled: false
     xpack.monitoring.elasticsearch.ssl.verification_mode: "none"
+   networks:
+    - elastic
    volumes:
     - type: bind
       source: Logging\logstash\
       target: /usr/share/logstash/pipeline/
    depends_on:
-    - elastic
-   networks:
     - elastic
 
   kibana:
@@ -76,11 +93,11 @@ services:
    image: kibana:8.8.1
    ports:
     - 5601:5601
-   depends_on: 
-    - elastic
    environment:
     ELASTICSEARCH_HOSTS: http://elastic:9200
    networks:
+    - elastic
+   depends_on: 
     - elastic
 
 networks:

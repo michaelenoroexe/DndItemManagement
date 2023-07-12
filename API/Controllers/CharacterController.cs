@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObjects.Character;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -29,7 +30,7 @@ namespace API.Controllers
         {
             var character = await service.CharacterService
                 .CreateRoomCharacterAsync(roomId, characterForCreation, true);
-
+            
             return Created($"dm/{dmId}/rooms/{roomId}/characters/{character.Id}", character);
         }
 

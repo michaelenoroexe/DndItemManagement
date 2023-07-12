@@ -3,9 +3,6 @@ using Entities.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Service.Contracts;
-using Shared.DataTransferObjects.CharacterItem;
-using Shared.DataTransferObjects.Item;
-using Shared.DataTransferObjects.Room;
 using SignalRSwaggerGen.Attributes;
 using System.Security.Claims;
 

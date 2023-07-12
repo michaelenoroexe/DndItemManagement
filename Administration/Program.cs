@@ -35,6 +35,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.InstantiateDB();
+
 app.ConfigureExceptionHandler();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

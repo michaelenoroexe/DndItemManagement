@@ -10,10 +10,7 @@ namespace Administration.Repository
         public DbSet<Room>? Rooms { get; set; }
 
         public RepositoryContext(DbContextOptions options)
-            : base(options) {
-            if (Database.CanConnect()) Database.EnsureCreated();
-            else Database.Migrate();
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

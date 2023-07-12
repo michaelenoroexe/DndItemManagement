@@ -13,7 +13,6 @@ public class Item
     public int ItemCategoryId { get; set; }
     public ItemCategory ItemCategory { get; set; } = null!;
     public int RoomId { get; set; }
-    public Room Room { get; set; } = null!;
 
     public ICollection<Action>? Actions { get; set; }
     public ICollection<Character>? Characters { get; set; }

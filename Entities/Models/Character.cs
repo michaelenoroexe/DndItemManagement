@@ -7,7 +7,6 @@ public class Character
     public int Currency { get; set; } = 0;
 
     public int RoomId { get; set; }
-    public Room Room { get; set; } = null!;
 
     public ICollection<Item>? Items { get; set; }
     public ICollection<CharacterItem>? CharacterItems { get; set; }

@@ -19,7 +19,6 @@ internal class ItemConfiguration : IEntityTypeConfiguration<Item>
         builder.Property(x => x.ItemDescription).HasColumnName("ItemDescription").HasMaxLength(1500);
 
         builder.HasOne(i => i.ItemCategory).WithMany(ic => ic.Items).HasForeignKey(i => i.ItemCategoryId).IsRequired(true);
-        builder.HasOne(i => i.Room).WithMany(r => r.Items).HasForeignKey(i => i.RoomId);
 
         builder.HasMany(i => i.Actions).WithMany(a => a.Items).UsingEntity("ItemsActions");
         builder.HasMany(i => i.Characters).WithMany(c => c.Items).UsingEntity<CharacterItem>(

@@ -51,4 +51,12 @@ public static class ServiceExtensions
             };
         });
     }
+
+        public static void InstantiateDB(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<RepositoryContext>();
+        context.Database.Migrate();
+    }
 }

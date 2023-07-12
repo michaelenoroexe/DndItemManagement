@@ -26,10 +26,8 @@ builder.Logging.AddSerilog(Log.Logger);
 
 builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddSingleton<IHasher, Hasher>();
 builder.Services.AddScoped<ValidationFilterAttribute>();
 
-builder.Services.ConfigureJWT(builder.Configuration);
 builder.Services.AddAuthorization();
 
 builder.Services.ConfigureRepositoryManager();
@@ -48,6 +46,8 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+
+app.InstantiateDB();
 
 app.ConfigureExceptionHandler();
 
@@ -70,6 +70,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapHub<ItemHub>("api/hubs/itemHub");
-app.MapHub<RoomHub>("api/hubs/roomHub");
 
 app.Run();

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Entities.Exceptions.Character;
-using Entities.Exceptions.Room;
 using Entities.Models;
 using Repository.Contracts;
 using Service.Contracts;
@@ -13,11 +12,6 @@ internal sealed class CharacterService : ICharacterService
     private readonly IRepositoryManager repository;
     private readonly IMapper mapper;
 
-    private async Task CheckIfRoomExists(int roomId, bool trackChanges)
-    {
-        var room = await repository.Room.GetRoomAsync(roomId, trackChanges);
-        if (room is null) throw new RoomNotFoundException(roomId);
-    }
     private async Task<Character> GetCharacterAndCheckIfItExists(int characterId, bool trackChanges)
     {
         var character = await repository.Character.GetCharacterAsync(characterId, trackChanges);
@@ -34,8 +28,6 @@ internal sealed class CharacterService : ICharacterService
 
     public async Task<CharacterDto> CreateRoomCharacterAsync(int roomId, CharacterForCreationDto characterForCreation, bool trackChanges)
     {
-        await CheckIfRoomExists(roomId, trackChanges);
-
         var characterEntity = mapper.Map<Character>(characterForCreation);
 
         repository.Character.CreateCharacter(roomId, characterEntity);
@@ -48,8 +40,6 @@ internal sealed class CharacterService : ICharacterService
 
     public async Task DeleteCharacterAsync(int roomId, int id, bool trackChanges)
     {
-        await CheckIfRoomExists(roomId, trackChanges);
-
         var characterDb = await GetCharacterAndCheckIfItExists(id, trackChanges);
 
         repository.Character.DeleteCharacter(characterDb);
@@ -58,8 +48,6 @@ internal sealed class CharacterService : ICharacterService
 
     public async Task<IEnumerable<CharacterDto>> GetRoomCharacters(int roomId, bool trackChanges)
     {
-        await CheckIfRoomExists(roomId, trackChanges);
-
         var charactersDb = await repository.Character.GetRoomCharactersAsync(roomId, trackChanges);
 
         var charactersToReturn = mapper.Map<IEnumerable<CharacterDto>>(charactersDb);
@@ -70,8 +58,6 @@ internal sealed class CharacterService : ICharacterService
     public async Task UpdateCharacterAsync(int roomId, int id, CharacterForUpdateDto characterForUpdate, 
         bool roomTrackChanges, bool characterTrackChanges)
     {
-        await CheckIfRoomExists(roomId, roomTrackChanges);
-
         var characterDb = await GetCharacterAndCheckIfItExists(id, characterTrackChanges);
 
         mapper.Map(characterForUpdate, characterDb);
