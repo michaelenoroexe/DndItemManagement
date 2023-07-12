@@ -36,14 +36,6 @@ namespace API.Controllers
 
             return Ok(items);
         }
-        [HttpGet("dm/{dmId}/items")]
-        public async Task<IActionResult> GetAllItemsForDM(int dmId)
-        {
-            var items = await service.ItemService.GetAllItemsForDmAsync(dmId, false);
-
-            return Ok(items);
-        }
-
         [HttpPost("rooms/{roomId}/items")]
         public async Task<IActionResult> PostItemForRoom(int roomId,
             [FromBody] ItemForCreationDto itemForCreation)
@@ -56,8 +48,8 @@ namespace API.Controllers
             return Created($"rooms/{roomId}/items/{item.Id}", item);
         }
 
-        [HttpDelete("dm/{dmId}/rooms/{roomId}/items/{id}")]
-        public async Task<IActionResult> DeleteItemForRoom(int dmId, int roomId, int id)
+        [HttpDelete("rooms/{roomId}/items/{id}")]
+        public async Task<IActionResult> DeleteItemForRoom(int roomId, int id)
         {
             await service.ItemService
                 .DeleteItemAsync(roomId, id, true);
@@ -69,9 +61,8 @@ namespace API.Controllers
 
         [HttpPut]
         [Route("rooms/{roomId}/items/{id}")]
-        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> UpdateItemForRoom
-            (int dmId, int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
+            (int roomId, int id, [FromBody] ItemForUpdateDto itemForUpdate)
         {
             var item = await service.ItemService.UpdateItemAsync(roomId, id, itemForUpdate, false, true);
 
@@ -82,9 +73,8 @@ namespace API.Controllers
 
         [HttpPatch]
         [Route("rooms/{roomId}/items/{id}")]
-        [Route("dm/{dmId}/rooms/{roomId}/items/{id}")]
         public async Task<IActionResult> PatchItemForRoom
-            (int dmId, int roomId, int id, [FromBody] ItemForPatchDto itemDto)
+            (int roomId, int id, [FromBody] ItemForPatchDto itemDto)
         {
             var item = await service.ItemService.PartialUpdateItemAsync(roomId,  id, itemDto, false, true);
 

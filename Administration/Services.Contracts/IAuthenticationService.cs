@@ -5,7 +5,7 @@ namespace Administration.Service.Contracts;
 
 public interface IAuthenticationService
 {
-    Task<bool> ValidateDM(DMForAuthenticationDto dMForAuthentication);
-    Task<bool> ValidateRoom(RoomForAuthenticationDto roomInfo);
+    Task<DMDto?> ValidateDM(DMForAuthenticationDto dMForAuthentication);
+    Task<RoomDto?> ValidateRoom(RoomForAuthenticationDto roomInfo);
     string CreateToken(int? dmId, int? characterId);
 }

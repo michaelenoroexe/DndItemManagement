@@ -10,7 +10,6 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("/api/rooms/{roomId}/character/{characterId}/chItems")]
-    [Route("/api/dm/{dmId}/rooms/{roomId}/character/{characterId}/chItems")]
     public class CharacterItemController : ControllerBase
     {
         private readonly IServiceManager service;

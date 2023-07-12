@@ -1,7 +1,9 @@
 using Administration.Service.Contracts;
 using Administration.Shared.DataTransferObjects.DM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace Administration.Controllers
 {
@@ -29,7 +31,8 @@ namespace Administration.Controllers
         {
             var name = User.FindFirst(ClaimTypes.Name)?.Value;
             if (name is null) return NoContent();
-            var dm = await dmService.GetDMAsync(name, false);
+            if (!int.TryParse(name, out int dmId)) return BadRequest("Not valid dm id in token.");
+            var dm = await dmService.GetDMAsync(dmId, false);
 
             return Ok(dm);
         }
@@ -43,11 +46,11 @@ namespace Administration.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> SignInDm([FromBody] DMForAuthenticationDto dMForAuth)
         {
-            var res = await authService.ValidateDM(dMForAuth);
-            if (res == false) return ValidationProblem();
+            var valDm = await authService.ValidateDM(dMForAuth);
+            if (valDm is null) return ValidationProblem();
             var character = User.FindFirst(ClaimTypes.Actor)?.Value;
             var token = authService
-                .CreateToken(Convert.ToInt32(dMForAuth.Login), (character is null)? null : Convert.ToInt32(character));
+                .CreateToken(Convert.ToInt32(valDm.Id), (character is null)? null : Convert.ToInt32(character));
             
             return Ok(new { token = $"{token}" });
         }

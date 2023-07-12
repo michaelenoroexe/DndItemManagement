@@ -24,7 +24,7 @@ namespace Administration.Controllers
             this.authService = authService;
             this.roomHub = hub;
         }
-        [HttpGet("rooms/{id}")]
+        [HttpGet("dm/{dmId}/rooms/{id}")]
         public async Task<IActionResult> GetRooms(int id)
         {
             var room = await roomService.GetRoomAsync(id, false);
@@ -38,21 +38,14 @@ namespace Administration.Controllers
 
             return Ok(rooms);
         }
-        [HttpGet("rooms")]
-        public async Task<IActionResult> GetRooms()
-        {
-            var dms = await roomService.GetAllRooms(false);
-
-            return Ok(dms);
-        }
-        [HttpPost("rooms/auth")]
+        [HttpPost("roomAuth")]
         public async Task<ActionResult> SignInRoom(RoomForAuthenticationDto room)
         {
-            var valResult = await authService.ValidateRoom(room);
-            if (valResult == false) throw new UnauthorizedAccessException();
-            int? dmId = HttpContext.User?.FindFirst(ClaimTypes.Name)?.Value is string dI? Convert.ToInt32(dI) : null ;
-            string token = authService.CreateToken(dmId, room.CharacterId);
-            return Ok(new { Tocken = token });
+            var valRoom = await authService.ValidateRoom(room);
+            if (valRoom is null) return ValidationProblem();
+            int? dmId = HttpContext.User?.FindFirst(ClaimTypes.Name)?.Value is string dI? Convert.ToInt32(dI) : null;
+            string token = authService.CreateToken(dmId, valRoom.Id);
+            return Ok(new { token = $"{token}" });
         }
         [Authorize]
         [HttpPost("dm/{dmId}/rooms")]
@@ -90,15 +83,6 @@ namespace Administration.Controllers
             await roomHub.Clients.All.SendAsync("ChangedRoom", roomForUpdate);
 
             return NoContent();
-        }
-        [HttpOptions("rooms")]
-        public IActionResult RoomOptionsFull()
-        {
-            Response.Headers.Add("Allow",
-                "GET"
-                );
-
-            return Ok();
         }
         [HttpOptions("dm/{dmId}/rooms/")]
         public IActionResult RoomOptions()

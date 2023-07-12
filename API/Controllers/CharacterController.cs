@@ -15,7 +15,6 @@ namespace API.Controllers
 
         [HttpGet]
         [Route("rooms/{roomId}/characters")]
-        [Route("dm/{dmId}/rooms/{roomId}/characters")]
         public async Task<IActionResult> GetRoomCharacters(int roomId)
         {
             var characters = await service.CharacterService.GetRoomCharacters(roomId, false);
@@ -24,18 +23,18 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        [Route("dm/{dmId}/rooms/{roomId}/characters")]
+        [Route("rooms/{roomId}/characters")]
         public async Task<IActionResult> CreateCharacterForRoom
-            (int dmId, int roomId, [FromBody] CharacterForCreationDto characterForCreation)
+            (int roomId, [FromBody] CharacterForCreationDto characterForCreation)
         {
             var character = await service.CharacterService
                 .CreateRoomCharacterAsync(roomId, characterForCreation, true);
             
-            return Created($"dm/{dmId}/rooms/{roomId}/characters/{character.Id}", character);
+            return Created($"rooms/{roomId}/characters/{character.Id}", character);
         }
 
         [HttpDelete]
-        [Route("dm/{dmId}/rooms/{roomId}/characters/{id}")]
+        [Route("rooms/{roomId}/characters/{id}")]
         public async Task<IActionResult> DeleteCharacterForRoom (int roomId, int id)
         {
             await service.CharacterService.DeleteCharacterAsync(roomId, id, true);
@@ -44,38 +43,13 @@ namespace API.Controllers
         }
 
         [HttpPut]
-        [Route("dm/{dmId}/rooms/{roomId}/characters/{id}")]
+        [Route("rooms/{roomId}/characters/{id}")]
         public async Task<IActionResult> UpdateCharacterForRoom
             (int roomId, int id, [FromBody] CharacterForUpdateDto characterForUpdate)
         {
             await service.CharacterService.UpdateCharacterAsync(roomId, id, characterForUpdate, false, true);
 
             return NoContent();
-        }
-
-        [HttpOptions("category/{categoryId}/items")]
-        public IActionResult AllItemOptions()
-        {
-            Response.Headers.Add("Allow",
-                "GET, " +
-                "PUT, " +
-                "OPTIONS"
-                );
-
-            return Ok();
-        }
-        [HttpOptions("dm/{dmId}/items/")]
-        public IActionResult ItemOptions()
-        {
-            Response.Headers.Add("Allow",
-                "GET, " +
-                "POST, " +
-                "PUT, " +
-                "DELETE, " +
-                "OPTIONS"
-                );
-
-            return Ok();
         }
     }
 }

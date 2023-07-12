@@ -7,6 +7,7 @@ using Administration.Shared.DataTransferObjects.Room;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AutoMapper;
 
 namespace Administration.Service;
 
@@ -14,6 +15,7 @@ internal sealed class AuthenticationService : IAuthenticationService
 {
     private readonly IRepositoryManager repositoryManager;
     private readonly IConfiguration configuration;
+    private readonly IMapper mapper;
     private readonly IHasher hasher;
 
     private static SigningCredentials GetSigningCredentials()
@@ -49,28 +51,32 @@ internal sealed class AuthenticationService : IAuthenticationService
     }
 
     public AuthenticationService(IConfiguration configuration, 
-        IRepositoryManager repositoryManager, IHasher hasher)
+        IRepositoryManager repositoryManager, 
+        IHasher hasher, IMapper mapper)
     {
         this.configuration = configuration;
         this.repositoryManager = repositoryManager;
         this.hasher = hasher;
+        this.mapper = mapper;
     }
 
-    public async Task<bool> ValidateDM(DMForAuthenticationDto dMForAuthentication)
+    public async Task<DMDto?> ValidateDM(DMForAuthenticationDto dMForAuthentication)
     {
         var dm = await repositoryManager.DM.GetDmByNameAsync(dMForAuthentication.Login!, false);
 
         var result = (dm is not null && hasher.VerifyPassword(dm.Password, dMForAuthentication.Password!));
 
-        return result;
+        return result? mapper.Map<DMDto>(dm) : null;
     }
 
-    public async Task<bool> ValidateRoom(RoomForAuthenticationDto roomInfo)
+    public async Task<RoomDto?> ValidateRoom(RoomForAuthenticationDto roomInfo)
     {
         var room = await repositoryManager.Room.GetRoomAsync(roomInfo.Id!.Value, false);
-        if (room is null) return false;
+        if (room is null) return null;
+        
+        if (!hasher.VerifyPassword(room.Password, roomInfo.Password!)) return null;
 
-        return hasher.VerifyPassword(room.Password, roomInfo.Password!);
+        return mapper.Map<RoomDto>(room);
     }
 
     public string CreateToken(int? dmId, int? roomId)
