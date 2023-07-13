@@ -53,7 +53,7 @@ export class RoomService {
     }
     public SignInRoom(roomId:number, password:string, characterId:number) {
         const token = localStorage.getItem("Token")!;
-        return this.http.post(`${environment.apiURL}roomsAuth`, 
+        return this.http.post(`${environment.apiURL}roomAuth`, 
             { id:roomId, password, characterId }, {headers: {"Authorization": "Bearer " + token}});
     }
     public StartRoom(room:Room) {

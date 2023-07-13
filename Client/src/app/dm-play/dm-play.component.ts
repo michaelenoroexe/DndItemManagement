@@ -25,12 +25,12 @@ export class DmPlayComponent implements OnInit {
     private characterService:CharacterService,
     private roomService:RoomService
   ) {
+    this.roomId = +this.route.snapshot.paramMap.get('roomId')!;
     roomService.StopWatch();
     hubService.StartWatchAndJoinDm(this.roomId);
   }
 
   async ngOnInit() {
-    this.roomId = +this.route.snapshot.paramMap.get('roomId')!;
     const th = this;
     this.roomService.GetRoom(this.roomId).subscribe({next(val) {
       th.room.id = val.id;

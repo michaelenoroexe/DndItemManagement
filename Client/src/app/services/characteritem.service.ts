@@ -15,7 +15,7 @@ export class CharacterItemService {
     public ListenAddingChEvent(call:(chItem:CharacterItem) => void) {
         this.hub.addchEvent.push(call);
     }
-    private ListenChangingChEvent(call:(chItem:CharacterItem) => void) {
+    public ListenChangingChEvent(call:(chItem:CharacterItem) => void) {
         this.hub.changechEvent.push(call);
     }
     public ListenDeleteChEvent(call:(chItem:{characterId:number, itemId:number}) => void) {

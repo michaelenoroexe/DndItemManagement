@@ -31,6 +31,14 @@ export class CategoryComponent {
       if(chItem.characterId == this.characterId && 
         this.itemsForCategory.some(i => i.id == chItem.itemId)) this.characterItems.push(chItem);
     });
+    chItemService.ListenChangingChEvent((chItem) => {
+      if (chItem.characterId == this.characterId) {
+        const chItemIndex = this.characterItems.findIndex(ci => ci.itemId == chItem.itemId);
+        const currChItem = this.characterItems[chItemIndex];
+        currChItem.currentDurability = chItem.currentDurability;
+        currChItem.itemNumber = chItem.itemNumber;
+      };
+    });
     chItemService.ListenDeleteChEvent((chItem) => {
       if (chItem.characterId == this.characterId) {
         const chItemIndex = this.characterItems.findIndex(ci => ci.itemId == chItem.itemId);
