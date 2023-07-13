@@ -76,15 +76,21 @@ export class ItemService {
     }
     public AddItem(roomId:number, item:Item) {
         const fullItem = item as any;
+        const token = localStorage.getItem("Token")!;
         fullItem.roomId = roomId;
-        this.http.post(`${environment.apiURL}rooms/${roomId}/items`, fullItem).subscribe({next(ar) {}});
+        this.http.post(`${environment.apiURL}rooms/${roomId}/items`, 
+            fullItem, {headers: {"Authorization": "Bearer " + token}}).subscribe({next(ar) {}});
     }
     public FullChangeItem(roomId:number, item:Item) {
         const fullItem = item as any;
+        const token = localStorage.getItem("Token")!;
         fullItem.roomId = roomId;
-        this.http.put(`${environment.apiURL}rooms/${roomId}/items/${item.id}`, fullItem);
+        this.http.put(`${environment.apiURL}rooms/${roomId}/items/${item.id}`, 
+            fullItem, {headers: {"Authorization": "Bearer " + token}}).subscribe({next(ar) {}});
     }
     public DeleteItem(roomId:number, item:Item) {
-        this.http.delete(`${environment.apiURL}rooms/${roomId}/items/${item.id}`);
+        const token = localStorage.getItem("Token")!;
+        this.http.delete(`${environment.apiURL}rooms/${roomId}/items/${item.id}`,
+            {headers: {"Authorization": "Bearer " + token}}).subscribe({next(ar) {}});
     }
 }

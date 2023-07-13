@@ -23,10 +23,11 @@ export class RoomService {
             .forEach(r => this.dmRoomList!.push(r));
     }
     public GetDmRoomList(dmId:number) {
-        return this.http.get<Room[]>(`${environment.apiURL}dm/${dmId}/rooms`);
+        const token = localStorage.getItem("Token")!;
+        return this.http.get<Room[]>(`${environment.apiURL}dm/${dmId}/rooms`, 
+            {headers: {"Authorization": "Bearer " + token}});
     }
     constructor(private dmService:DmService, private http:HttpClient) {
-        const token = localStorage.getItem("Token")!;
         this.roomHub = new signalR.HubConnectionBuilder()
                             .withUrl(environment.apiURL + 'hubs/roomHub')
                             .build();
@@ -45,8 +46,10 @@ export class RoomService {
             this.wached = false;
         }
     }
-    public GetRoom(roomId:number) {        
-        return this.http.get<Room>(`${environment.apiURL}rooms/${roomId}`);
+    public GetRoom(roomId:number) {    
+        const token = localStorage.getItem("Token")!;
+        return this.http.get<Room>(`${environment.apiURL}dm/0/rooms/${roomId}`, 
+            {headers: {"Authorization": "Bearer " + token}});
     }
     public SignInRoom(roomId:number, password:string, characterId:number) {
         const token = localStorage.getItem("Token")!;

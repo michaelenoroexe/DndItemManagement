@@ -34,10 +34,11 @@ export class CharacterItemService {
         let chItems = this.characterItems[characterId]
         if (chItems != undefined) return chItems
         const chItemsRequest:CharacterItem[] = []
+        const token = localStorage.getItem("Token")!;
         this.characterItems[characterId] = chItemsRequest;
         chItems = chItemsRequest;
-        this.http.get<CharacterItem[]>(`${environment.apiURL}rooms/${roomId}/character/${characterId}/chItems`)
-        .subscribe({
+        this.http.get<CharacterItem[]>(`${environment.apiURL}rooms/${roomId}/character/${characterId}/chItems`,
+            {headers: {"Authorization": "Bearer " + token}}).subscribe({
             next(value:CharacterItem[]) {
                 value.forEach(ci => chItemsRequest.push(ci));
             }
@@ -45,18 +46,23 @@ export class CharacterItemService {
         return chItems;
     }
     public AddChItem(roomId:number, chItem:CharacterItem) {
+        const token = localStorage.getItem("Token")!;
         this.http.post(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
-        chItem);
+            chItem, {headers: {"Authorization": "Bearer " + token}}).subscribe({next(val) {}});
     }
     public FullChangeChItem(roomId:number, chItem:CharacterItem) {
+        const token = localStorage.getItem("Token")!;
         this.http.put(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
-        chItem);
+            chItem, {headers: {"Authorization": "Bearer " + token}}).subscribe({next(val) {}});;
     }
     public PartialChangeChItem(roomId:number, chItem:any) {
+        const token = localStorage.getItem("Token")!;
         this.http.patch(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`, 
-        chItem);
+            chItem, {headers: {"Authorization": "Bearer " + token}}).subscribe({next(val) {}});;
     }
     public DeleteChItem(roomId:number, chItem:CharacterItem) {
-        this.http.delete(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`);
+        const token = localStorage.getItem("Token")!;
+        this.http.delete(`${environment.apiURL}rooms/${roomId}/character/${chItem.characterId}/chItems/${chItem.itemId}`,
+            {headers: {"Authorization": "Bearer " + token}}).subscribe({next(val) {}});;
     }
 }
