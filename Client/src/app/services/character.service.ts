@@ -26,13 +26,15 @@ export class CharacterService {
         return characters;
     }
     AddCharacters(roomId:number, characterName:string) {
+        const token = localStorage.getItem("Token")!;
         return this.http
         .post<Character>(`${environment.apiURL}rooms/${roomId}/characters`,
-        {Name: characterName});
+        {Name: characterName}, {headers: {"Authorization": "Bearer " + token}});
     }
     UpateCharacter(roomId:number, character:Character) {
+        const token = localStorage.getItem("Token")!;
         return this.http
         .put(`${environment.apiURL}rooms/${roomId}/characters/${character.id}`,
-        {name: character.name});
+        {name: character.name}, {headers: {"Authorization": "Bearer " + token}});
     }
 }

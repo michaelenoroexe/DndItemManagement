@@ -29,7 +29,7 @@ namespace API.Controllers
         {
             var character = await service.CharacterService
                 .CreateRoomCharacterAsync(roomId, characterForCreation, true);
-            
+
             return Created($"rooms/{roomId}/characters/{character.Id}", character);
         }
 

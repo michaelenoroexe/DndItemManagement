@@ -4,6 +4,9 @@ using Administration.Service.Contracts;
 using Administration.Extensions;
 using Serilog;
 using Serilog.Exceptions;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Administration.Service;
 
 Log.Logger = new LoggerConfiguration()
     .Enrich.WithExceptionDetails()
