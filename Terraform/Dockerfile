@@ -1,4 +1,4 @@
 FROM hashicorp/terraform AS terraform
 COPY . /infrastructure
 WORKDIR /infrastructure
-CMD [ "terraform", "init" ]
+CMD [ "/bin/sh", "-c", "terraform init && terraform apply" ]
