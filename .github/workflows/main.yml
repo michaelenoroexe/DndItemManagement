@@ -77,10 +77,10 @@ jobs:
       - name: Run terraform instance
         run: |
             docker run \
-            -e "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}"
-            -e "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}"
-            -d \
-            --name Terraform
-            terra
+              -e "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}"
+              -e "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}"
+              -d \
+              --name Terraform
+              terra
       - name: Deploy infrastructure
         run: docer exec -d Terraform terraform apply
