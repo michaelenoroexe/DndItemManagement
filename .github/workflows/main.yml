@@ -83,4 +83,4 @@ jobs:
               --name Terraform \
               terra
       - name: Deploy infrastructure
-        run: docer exec -d Terraform terraform apply
+        run: docker exec -d Terraform terraform apply
