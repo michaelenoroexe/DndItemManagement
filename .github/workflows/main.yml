@@ -73,7 +73,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Build terraform image
-        run: docker build -t terra
+        run: docker build -t terra ./Terraform/
       - name: Run terraform instance
         run: |
             docker run \
