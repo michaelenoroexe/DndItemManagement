@@ -1,4 +1,19 @@
+terraform {
+  required_version = ">=1.0.0, < 2.0.0"
+  backend "s3" {
+    bucket = "dnd-item-manager-terraform-state"
+    key    = "global/s3/actions/terraform.tfstate"
+    region = "eu-north-1"
 
+    dynamodb_table = "dnd-item-manager-terraform-lock"
+    encrypt        = true
+  }
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+    }
+  }
+}
 
 provider "aws" {
   region = var.target_region
@@ -48,4 +63,12 @@ resource "aws_instance" "revers_proxy" {
   availability_zone      = var.target_region
   ami                    = "ami-0110d1b5b1cdd8780"
   vpc_security_group_ids = [aws_security_group.global_group_for_proxy]
+
+  user_data = <<-EOF
+              #!bin/bash
+              docker run \
+              -p 80:80
+              --name Client
+              791958344472.dkr.ecr.eu-north-1.amazonaws.com/dnd-item-manager-client
+              EOF
 }

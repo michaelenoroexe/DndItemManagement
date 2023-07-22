@@ -22,63 +22,64 @@ jobs:
     environment: build
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Configure
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Create docker network
-        run: docker network create -d bridge dnd-network
-      # Create DB
-      - name: Create db volume
-        run: docker volume create sql-item-manage
-      - name: Run DB
-        run: | 
-            docker run \
-              -e "ACCEPT_EULA=${{vars.ACCEPT_EULA}}" \
-              -e "MSSQL_SA_PASSWORD=${{secrets.SA_PASSWORD}}" \
-              -p 1401:1433 \
-              -v sql-item-manage:/var/opt/mssql \
-              -d \
-              --net=dnd-network \
-              --name DndItem \
-              mcr.microsoft.com/mssql/server
+        with:
+          persist-credentials: false
+
+      - name: Configure AWS credentials
+        id: aws-credentials
+        uses: aws-actions/configure-aws-credantials@v2
+        with:
+          aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       # Create API
       - name: Create API image
-        run: docker build -t net/api:1.0 . -f ./API/Dockerfile
-      - name: Run ASP API
-        run: | 
-            docker run \
-              -e "CONNECTION_STRING=${{secrets.CONNECTION_STRING}}" \
-              -e "SECRET=${{secrets.SECRET}}" \
-              -p 5136:80 \
-              -d \
-              --net=dnd-network \
-              --name MainAPI \
-              net/api:1.0
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dnd-item-manager-api
+          IMAGE_TAG: ${{ github.sha }}
+        # Need to specify docker context because needed projects in parent directory
+        run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f ./API/Dockerfile .
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+      # Create Admin
+      - name: Create Admin image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dnd-item-manager-admin
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./Administration/
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
       # Create Client
       - name: Create Client image
-        run: docker build -t nginx/client:1.0 ./Client/
-      - name: Run client
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: dnd-item-manager-client
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-            docker run \
-              -p 80:80 \
-              -d \
-              --net=dnd-network \
-              --name Client \
-              nginx/client:1.0
-  
-  # infrastructure:
-  #   runs-on: ubuntu-latest
-  #   environment: build
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-  #     - name: Build terraform image
-  #       run: docker build -t terra ./Terraform/
-  #     - name: Deploy infrastructure
-  #       run: |
-  #           docker run \
-  #             -e "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}" \
-  #             -e "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}" \
-  #             -d \
-  #             --name Terraform \ 
-  #             terra
+            docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./Client/
+            docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      
+      # # Create infrastructure
+      # - name: Build terraform image
+      #   run: docker build -t terra:1.0 ./Terraform/
+      # - name: Deploy infrastructure
+      #   run: |
+      #       docker run \
+      #         -e "AWS_ACCESS_KEY_ID=${{secrets.AWS_ACCESS_KEY_ID}}" \
+      #         -e "AWS_SECRET_ACCESS_KEY=${{secrets.AWS_SECRET_ACCESS_KEY}}" \
+      #         -e "TF_VAR_database_password=${{secrets.SA_PASSWORD}}" \
+      #         -d \
+      #         --name Terraform \ 
+      #         terra:1.0
