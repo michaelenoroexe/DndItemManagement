@@ -2,7 +2,7 @@ resource "aws_instance" "dbs" {
   instance_type     = "t3.small"
   availability_zone = var.target_region
   ami               = "ami-0194def630642c334"
-  vpc_security_groups = [aws_security_group.global_group_for_proxy]
+  vpc_security_groups = [aws_security_group.global_group_for_proxy.id]
   user_data_replace_on_change = true
 
   user_data = <<-EOF

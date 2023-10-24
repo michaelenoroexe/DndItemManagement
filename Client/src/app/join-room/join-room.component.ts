@@ -40,7 +40,8 @@ export class JoinRoomComponent {
   SignIn() {
     const th = this;
     this.roomService.SignInRoom(this.room.id, this.password, this.selectedCharacter!.id).subscribe({
-      next(value) {
+      next(value:any) {
+        th.SaveToken(value.token);
         th.router.navigate(["character/play", {roomId:th.room.id, chId:th.selectedCharacter!.id}]);
       },
     });

@@ -23,7 +23,7 @@ resource "aws_launch_configuration" "workHub" {
   instance_type          = "t3.medium"
   availability_zone      = var.target_region
   ami                    = "ami-0963fd9d8200e9075"
-  vpc_security_group_ids = [aws_security_group.global_group_for_proxy]
+  vpc_security_group_ids = [aws_security_group.global_group_for_proxy.id]
 }
 
 resource "aws_autoscaling_group" "name" {
@@ -55,14 +55,14 @@ resource "aws_instance" "kuberDeploy" {
               EOF
 
   user_data_replace_on_change = true
-  vpc_security_group_ids      = [aws_security_group.global_group_for_proxy]
+  vpc_security_group_ids      = [aws_security_group.global_group_for_proxy.id]
 }
 
 resource "aws_instance" "revers_proxy" {
   instance_type          = "t2.micro"
   availability_zone      = var.target_region
   ami                    = "ami-0110d1b5b1cdd8780"
-  vpc_security_group_ids = [aws_security_group.global_group_for_proxy]
+  vpc_security_group_ids = [aws_security_group.global_group_for_proxy.id]
 
   user_data = <<-EOF
               #!bin/bash
